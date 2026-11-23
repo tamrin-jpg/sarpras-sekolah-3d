@@ -1,0 +1,3173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SARPRAS 3D PRO — Sistem Manajemen Sarana & Prasarana</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Tactile 3D Claymorphism & Vibrant Menu Design System */
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 10% 10%, #eef2ff 0%, #f8fafc 45%, #ecfeff 100%);
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* 3D Elevated Card */
+    .card-3d {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow:
+        0 10px 25px -5px rgba(15, 23, 42, 0.08),
+        0 6px 0 0 #e2e8f0,
+        inset 0 2px 4px rgba(255, 255, 255, 0.9);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+    }
+
+    .card-3d-hover:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 18px 30px -8px rgba(15, 23, 42, 0.12),
+        0 8px 0 0 #cbd5e1,
+        inset 0 2px 4px rgba(255, 255, 255, 1);
+    }
+
+    /* 3D Tactile Buttons */
+    .btn-3d {
+      border-radius: 1rem;
+      font-weight: 700;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-3d:active {
+      transform: translateY(3px);
+    }
+
+    /* Menu Color Themes (3D Gradients + Thick 3D Bottom Lip) */
+    .theme-blue {
+      background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #1d4ed8, 0 10px 20px -5px rgba(37, 99, 235, 0.45);
+    }
+    .theme-blue:active { box-shadow: 0 2px 0 0 #1d4ed8; }
+
+    .theme-emerald {
+      background: linear-gradient(135deg, #059669 0%, #14b8a6 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #047857, 0 10px 20px -5px rgba(5, 150, 105, 0.45);
+    }
+    .theme-emerald:active { box-shadow: 0 2px 0 0 #047857; }
+
+    .theme-amber {
+      background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #c2410c, 0 10px 20px -5px rgba(249, 115, 22, 0.45);
+    }
+    .theme-amber:active { box-shadow: 0 2px 0 0 #c2410c; }
+
+    .theme-purple {
+      background: linear-gradient(135deg, #7c3aed 0%, #d946ef 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #5b21b6, 0 10px 20px -5px rgba(124, 58, 237, 0.45);
+    }
+    .theme-purple:active { box-shadow: 0 2px 0 0 #5b21b6; }
+
+    .theme-rose {
+      background: linear-gradient(135deg, #e11d48 0%, #ec4899 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #be123c, 0 10px 20px -5px rgba(225, 29, 72, 0.45);
+    }
+    .theme-rose:active { box-shadow: 0 2px 0 0 #be123c; }
+
+    .theme-indigo {
+      background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+      color: #ffffff;
+      box-shadow: 0 5px 0 0 #312e81, 0 10px 20px -5px rgba(67, 56, 202, 0.45);
+    }
+    .theme-indigo:active { box-shadow: 0 2px 0 0 #312e81; }
+
+    .theme-slate {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+      color: #334155;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 4px 0 0 #cbd5e1;
+    }
+    .theme-slate:active { box-shadow: 0 1px 0 0 #cbd5e1; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Modal Entrance Animation */
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.94) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-pop-in {
+      animation: popIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Print Stylesheet for Official A4 Letter & Inventory Asset Cards */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      body.print-card-mode main {
+        display: none !important;
+      }
+      body.print-card-mode #card-print-sheet {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #print-area-wrapper {
+        position: static !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      #printable-letter {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- MOBILE HEADER BAR -->
+  <header class="no-print lg:hidden sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b-2 border-slate-200 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl theme-indigo flex items-center justify-center font-display font-extrabold text-lg">
+        3D
+      </div>
+      <div>
+        <h1 class="font-display font-extrabold text-base text-slate-900 leading-tight">SARPRAS 3D PRO</h1>
+        <p id="mobile-subtitle" class="text-xs text-slate-500 font-medium">Sistem Manajemen Aset</p>
+      </div>
+    </div>
+    <button id="mobile-menu-btn" type="button" class="btn-3d theme-slate px-3 py-2 text-sm" aria-label="Buka Menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- MOBILE OVERLAY BACKDROP -->
+  <div id="sidebar-backdrop" class="no-print fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+  <!-- SIDEBAR NAVIGATION (3D COLORFUL MENU) -->
+  <aside id="sidebar" class="no-print fixed lg:sticky top-0 left-0 z-40 h-screen w-72 bg-white/95 backdrop-blur-xl border-r-2 border-slate-200/80 p-5 flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out overflow-y-auto">
+    <div>
+      <!-- Brand Identity -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg border-b-4 border-indigo-900">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="font-display font-extrabold text-lg text-slate-900 tracking-tight">SARPRAS 3D</h1>
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+              FIREBASE CLOUD
+            </span>
+          </div>
+        </div>
+        <button id="close-sidebar-btn" type="button" class="lg:hidden text-slate-400 hover:text-slate-700 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- 6 Colorful 3D Dashboard Menus -->
+      <nav id="sidebar-nav" class="space-y-3"></nav>
+    </div>
+
+    <!-- Bottom Firebase & Admin Status Card -->
+    <div class="mt-6 space-y-3">
+      <div id="sidebar-admin-box" class="p-4 rounded-2xl bg-indigo-50/90 border-2 border-indigo-200"></div>
+
+      <div class="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Status Server</span>
+          <span id="sidebar-status-dot" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Sinkron
+          </span>
+        </div>
+        <p id="sidebar-status-text" class="text-xs text-slate-600 leading-relaxed">Menyiapkan koneksi backend...</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT WORKSPACE -->
+  <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-[1440px] mx-auto w-full">
+    <!-- Top Desktop Status, Admin Login & Live Clock Bar -->
+    <div class="no-print card-3d p-4 sm:p-5 mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <div id="header-menu-icon" class="w-12 h-12 rounded-2xl theme-blue flex items-center justify-center shrink-0"></div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 id="header-menu-title" class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Data Inventaris Barang</h2>
+            <span id="header-school-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">SMA NEGERI 1 NUSANTARA</span>
+          </div>
+          <p id="header-menu-subtitle" class="text-xs sm:text-sm text-slate-500 mt-0.5">Manajemen aset ruangan, peralatan elektronik, dan sarana sekolah.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 self-start xl:self-center">
+        <!-- Admin Login / Role Switcher Pill -->
+        <div id="header-auth-controls" class="flex items-center gap-2"></div>
+
+        <div class="px-4 py-2 rounded-2xl bg-slate-900 text-white shadow-md border-b-4 border-slate-700 text-right">
+          <div id="live-clock-time" class="font-display font-extrabold text-base sm:text-lg tracking-wider text-cyan-300">00:00:00</div>
+          <div id="live-clock-date" class="text-[11px] text-slate-300">Memuat tanggal...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC VIEW CONTAINER -->
+    <div id="app-view"></div>
+  </main>
+
+  <!-- DEDICATED PRINT SHEET FOR KARTU INVENTARIS BARANG -->
+  <div id="card-print-sheet" class="hidden"></div>
+
+  <!-- MODAL CONTAINER (CRUD Forms, Detail View, Card Print Preview, Admin Login) -->
+  <div id="modal-root" class="no-print fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+    <div id="modal-box" class="card-3d w-full max-w-2xl p-6 sm:p-7 my-8 animate-pop-in relative"></div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="no-print fixed bottom-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- APPLICATION SCRIPT -->
+  <script>
+    // =========================================================================
+    // 1. KONFIGURASI FIREBASE UNTUK DEPLOYMENT GITHUB & VERCEL
+    // =========================================================================
+    // Saat Anda mem-publish ke GitHub & Vercel, ganti nilai di bawah ini
+    // dengan konfigurasi dari Firebase Console (Project Settings > Web App).
+    const VERCEL_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyA9lGwJ-Zl8ynPfrzgCp0cHY7kvavQMkeU",
+      authDomain: "sarpras-sekolah-3d.firebaseapp.com",
+      projectId: "sarpras-sekolah-3d",
+      storageBucket: "sarpras-sekolah-3d.firebasestorage.app",
+      messagingSenderId: "667673772265",
+      appId: "1:667673772265:web:f0a9550c5b973161153078"
+    };
+
+    const appId = typeof __app_id !== "undefined" ? __app_id : "sarpras-3d-pro";
+    const firebaseConfig =
+      typeof __firebase_config !== "undefined"
+        ? JSON.parse(__firebase_config)
+        : VERCEL_FIREBASE_CONFIG;
+
+    // =========================================================================
+    // 2. STATE APLIKASI TERPUSAT
+    // =========================================================================
+    const state = {
+      activeMenu: "inventaris",
+      isAdminLoggedIn: false,
+      loanViewMode: "borrower", // "borrower" | "admin"
+      preselectedBorrowerItemId: "",
+      isDemoMode: false,
+      db: null,
+      auth: null,
+      storage: null,
+      fsModules: null,
+      currentUser: null,
+      inventory: [],
+      loans: [],
+      settings: {
+        schoolName: "SMA NEGERI 1 NUSANTARA",
+        agencyName: "PEMERINTAH PROVINSI • DINAS PENDIDIKAN & KEBUDAYAAN",
+        address: "Jl. Pendidikan Merdeka No. 45, Kota Nusantara • Telp. (021) 555-0192",
+        email: "sarpras@sman1nusantara.sch.id",
+        sarprasHeadName: "Drs. H. Hendra Wijaya, M.Pd.",
+        sarprasHeadNip: "19750817 200012 1 003",
+        adminUsername: "admin",
+        adminPassword: "sarpras123"
+      },
+      searchInventory: "",
+      filterCategory: "Semua",
+      filterCondition: "Semua",
+      searchLoan: "",
+      filterLoanStatus: "Semua",
+      selectedLetterLoanId: "",
+      filterGalleryCategory: "Semua",
+      filterGalleryAvailability: "Semua"
+    };
+
+    // =========================================================================
+    // 3. DEFINISI 6 MENU DASBOR 3D WARNA-WARNI & UTILITAS UI
+    // =========================================================================
+    const MENUS = [
+      {
+        id: "inventaris",
+        number: "01",
+        title: "Data Inventaris",
+        subtitle: "Manajemen stok barang, upload foto & cetak kartu inventaris.",
+        theme: "theme-blue",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>`
+      },
+      {
+        id: "peminjaman",
+        number: "02",
+        title: "Peminjaman Ruang & Barang",
+        subtitle: "Portal pengajuan peminjam & panel persetujuan admin Sarpras.",
+        theme: "theme-emerald",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`
+      },
+      {
+        id: "surat",
+        number: "03",
+        title: "Cetak Surat Peminjaman",
+        subtitle: "Surat resmi konfirmasi Sarpras siap cetak A4 untuk tindak lanjut admin.",
+        theme: "theme-amber",
+        badgeBg: "bg-amber-100 text-amber-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>`
+      },
+      {
+        id: "realtime",
+        number: "04",
+        title: "Dasbor Realtime Guru",
+        subtitle: "Pemantauan langsung durasi pemakaian ruang & barang oleh guru.",
+        theme: "theme-purple",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+      },
+      {
+        id: "galeri",
+        number: "05",
+        title: "Galeri Inventaris",
+        subtitle: "Katalog visual 3D foto sarana prasarana & status ketersediaan unit.",
+        theme: "theme-rose",
+        badgeBg: "bg-rose-100 text-rose-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>`
+      },
+      {
+        id: "setting",
+        number: "06",
+        title: "Setting Sistem",
+        subtitle: "Konfigurasi identitas instansi, kop surat, penandatangan & akun admin.",
+        theme: "theme-indigo",
+        badgeBg: "bg-indigo-100 text-indigo-700",
+        icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>`
+      }
+    ];
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showToast(title, message, type = "success") {
+      const container = document.getElementById("toast-container");
+      const styles = {
+        success: "border-emerald-400 bg-emerald-50 text-emerald-950",
+        error: "border-rose-400 bg-rose-50 text-rose-950",
+        info: "border-blue-400 bg-blue-50 text-blue-950",
+        warning: "border-amber-400 bg-amber-50 text-amber-950"
+      };
+      const toast = document.createElement("div");
+      toast.className = `pointer-events-auto card-3d p-4 border-2 ${styles[type] || styles.success} animate-pop-in`;
+      toast.innerHTML = `
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h4 class="font-display font-bold text-sm">${escapeHtml(title)}</h4>
+            <p class="text-xs mt-0.5 opacity-90">${escapeHtml(message)}</p>
+          </div>
+          <button type="button" class="text-slate-400 hover:text-slate-700 font-bold text-base leading-none">&times;</button>
+        </div>
+      `;
+      toast.querySelector("button").onclick = () => toast.remove();
+      container.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) toast.remove();
+      }, 4200);
+    }
+
+    function openModal(htmlContent, maxWidthClass = "max-w-2xl") {
+      const root = document.getElementById("modal-root");
+      const box = document.getElementById("modal-box");
+      box.className = `card-3d w-full ${maxWidthClass} p-6 sm:p-7 my-8 animate-pop-in relative`;
+      box.innerHTML = htmlContent;
+      root.classList.remove("hidden");
+      root.classList.add("flex");
+    }
+
+    function closeModal() {
+      const root = document.getElementById("modal-root");
+      const box = document.getElementById("modal-box");
+      root.classList.add("hidden");
+      root.classList.remove("flex");
+      box.innerHTML = "";
+    }
+
+    function showConfirmModal(title, message, onConfirm) {
+      openModal(`
+        <div class="text-center sm:text-left">
+          <div class="w-12 h-12 rounded-2xl theme-rose flex items-center justify-center mb-4 mx-auto sm:mx-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h3 class="font-display font-extrabold text-xl text-slate-900 mb-2">${escapeHtml(title)}</h3>
+          <p class="text-sm text-slate-600 mb-6">${escapeHtml(message)}</p>
+          <div class="flex flex-col sm:flex-row justify-end gap-3">
+            <button type="button" id="confirm-cancel-btn" class="btn-3d theme-slate px-5 py-2.5 text-sm">Batal</button>
+            <button type="button" id="confirm-ok-btn" class="btn-3d theme-rose px-5 py-2.5 text-sm">Ya, Lanjutkan</button>
+          </div>
+        </div>
+      `, "max-w-md");
+
+      document.getElementById("confirm-cancel-btn").onclick = closeModal;
+      document.getElementById("confirm-ok-btn").onclick = () => {
+        closeModal();
+        onConfirm();
+      };
+    }
+
+    function formatDateTimeID(isoStr) {
+      if (!isoStr) return "-";
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return isoStr;
+      return d.toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function formatDateFullID(isoStr) {
+      const d = isoStr ? new Date(isoStr) : new Date();
+      if (isNaN(d.getTime())) return "-";
+      return d.toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    // Ilustrasi 3D SVG Otomatis berdasarkan kategori barang
+    function getCategoryIllustrationSVG(category, sizeClass = "w-20 h-20") {
+      const configs = {
+        "Elektronik & IT": {
+          bg: "from-blue-500 via-cyan-400 to-sky-300",
+          svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>`
+        },
+        "Ruangan & Aula": {
+          bg: "from-emerald-500 via-teal-400 to-green-300",
+          svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>`
+        },
+        "Alat Laboratorium": {
+          bg: "from-purple-600 via-fuchsia-500 to-pink-400",
+          svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>`
+        },
+        "Olahraga & Seni": {
+          bg: "from-amber-500 via-orange-400 to-yellow-300",
+          svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+        },
+        "Furnitur": {
+          bg: "from-rose-500 via-pink-500 to-red-400",
+          svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>`
+        }
+      };
+      return configs[category] || {
+        bg: "from-indigo-500 via-violet-500 to-purple-400",
+        svg: `<svg class="${sizeClass} text-white drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>`
+      };
+    }
+
+    // Kompresi & Upload Foto Inventaris (Firebase Storage + Fallback ObjectURL tanpa Base64)
+    function compressImageToBlob(file, maxWidth = 900, quality = 0.82) {
+      return new Promise((resolve, reject) => {
+        const objectUrl = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          URL.revokeObjectURL(objectUrl);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) resolve(blob);
+              else reject(new Error("Gagal memproses gambar."));
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("File gambar tidak valid."));
+        };
+        img.src = objectUrl;
+      });
+    }
+
+    async function uploadInventoryPhoto(file) {
+      const compressedBlob = await compressImageToBlob(file);
+      if (!state.isDemoMode && state.storage && state.currentUser && state.fsModules) {
+        try {
+          const { storageRef, uploadBytes, getDownloadURL } = state.fsModules;
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const path = `artifacts/${appId}/public/inventory/${Date.now()}_${safeName}.jpg`;
+          const fileRef = storageRef(state.storage, path);
+          await uploadBytes(fileRef, compressedBlob, { contentType: "image/jpeg" });
+          return await getDownloadURL(fileRef);
+        } catch (err) {
+          console.warn("Firebase Storage belum aktif, menggunakan URL pratinjau lokal:", err);
+          showToast(
+            "Info Penyimpanan Foto",
+            "Foto dimuat dengan pratinjau sesi lokal. Aktifkan Firebase Storage di Console untuk menyimpan permanen.",
+            "info"
+          );
+          return URL.createObjectURL(compressedBlob);
+        }
+      }
+      return URL.createObjectURL(compressedBlob);
+    }
+
+    // Generator Barcode Vector SVG untuk Kartu Inventaris Barang
+    function generateBarcodeSVG(codeText) {
+      const str = String(codeText || "INV-SARPRAS");
+      let bars = "";
+      let x = 2;
+      for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i);
+        const w1 = (charCode % 3) + 1;
+        const gap = ((charCode >> 2) % 2) + 1.5;
+        const w2 = ((charCode >> 4) % 2) + 1.5;
+        bars += `<rect x="${x}" y="0" width="${w1}" height="28" fill="#0f172a"/>`;
+        x += w1 + gap;
+        bars += `<rect x="${x}" y="0" width="${w2}" height="28" fill="#0f172a"/>`;
+        x += w2 + 2;
+      }
+      return `<svg viewBox="0 0 ${Math.max(80, x + 2)} 28" class="h-7 w-auto mx-auto" preserveAspectRatio="none">${bars}</svg>`;
+    }
+
+    // =========================================================================
+    // 4. SISTEM AUTENTIKASI ADMIN (LOGIN / LOGOUT / GUARD)
+    // =========================================================================
+    function renderAuthUI() {
+      const headerCtrl = document.getElementById("header-auth-controls");
+      const sidebarBox = document.getElementById("sidebar-admin-box");
+
+      if (state.isAdminLoggedIn) {
+        if (headerCtrl) {
+          headerCtrl.innerHTML = `
+            <span class="px-3 py-2 rounded-2xl bg-emerald-100 border-2 border-emerald-300 text-emerald-800 text-xs font-extrabold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+              Admin Sarpras
+            </span>
+            <button type="button" id="btn-header-logout" class="btn-3d theme-rose px-3.5 py-2 text-xs">
+              🚪 Logout
+            </button>
+          `;
+        }
+        if (sidebarBox) {
+          sidebarBox.className = "p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-200";
+          sidebarBox.innerHTML = `
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-extrabold text-emerald-800 uppercase">🛡️ Mode Admin Aktif</span>
+              <button type="button" id="btn-sidebar-logout" class="text-xs font-extrabold text-rose-600 hover:underline">Keluar</button>
+            </div>
+            <p class="text-[11px] text-emerald-700 leading-relaxed">Akses penuh CRUD inventaris, verifikasi peminjaman, & pengaturan aktif.</p>
+          `;
+        }
+      } else {
+        if (headerCtrl) {
+          headerCtrl.innerHTML = `
+            <span class="px-3 py-2 rounded-2xl bg-slate-100 border-2 border-slate-200 text-slate-700 text-xs font-bold">
+              🧑‍🏫 Mode Pengunjung / Guru
+            </span>
+            <button type="button" id="btn-header-login" class="btn-3d theme-indigo px-4 py-2 text-xs">
+              🔐 Login Admin
+            </button>
+          `;
+        }
+        if (sidebarBox) {
+          sidebarBox.className = "p-4 rounded-2xl bg-indigo-50/90 border-2 border-indigo-200";
+          sidebarBox.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-extrabold text-indigo-900 uppercase">Akses Pengunjung</span>
+              <span class="px-2 py-0.5 rounded-full bg-indigo-200 text-indigo-800 text-[10px] font-bold">Guru / Umum</span>
+            </div>
+            <p class="text-[11px] text-indigo-700 mb-3 leading-relaxed">Login sebagai Admin Sarpras untuk mengelola inventaris & menyetujui pinjaman.</p>
+            <button type="button" id="btn-sidebar-login" class="btn-3d theme-indigo w-full py-2 text-xs">
+              🔐 Login Admin Sarpras
+            </button>
+          `;
+        }
+      }
+
+      const hLogin = document.getElementById("btn-header-login");
+      const sLogin = document.getElementById("btn-sidebar-login");
+      const hLogout = document.getElementById("btn-header-logout");
+      const sLogout = document.getElementById("btn-sidebar-logout");
+
+      if (hLogin) hLogin.onclick = () => openAdminLoginModal();
+      if (sLogin) sLogin.onclick = () => openAdminLoginModal();
+      if (hLogout) hLogout.onclick = () => logoutAdmin();
+      if (sLogout) sLogout.onclick = () => logoutAdmin();
+    }
+
+    function openAdminLoginModal(onSuccessCallback = null) {
+      closeMobileSidebar();
+      openModal(`
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl theme-indigo flex items-center justify-center text-white text-xl font-extrabold">🔐</div>
+            <div>
+              <h3 class="font-display font-extrabold text-xl text-slate-900">Login Admin Sarpras</h3>
+              <p class="text-xs text-slate-500">Masuk untuk mengelola aset, menyetujui peminjaman & pengaturan.</p>
+            </div>
+          </div>
+          <button type="button" id="close-login-modal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        </div>
+
+        <form id="form-admin-login" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Username Admin</label>
+            <input id="login-username" name="username" type="text" required autocomplete="username" placeholder="Masukkan username admin..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-bold" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password / PIN Admin</label>
+            <input id="login-password" name="password" type="password" required autocomplete="current-password" placeholder="Masukkan password admin..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-bold" />
+          </div>
+
+          <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-800">
+            <strong>Info Default Uji Coba:</strong> Username <code class="font-mono font-bold bg-white px-1.5 py-0.5 rounded">${escapeHtml(state.settings.adminUsername)}</code> • Password <code class="font-mono font-bold bg-white px-1.5 py-0.5 rounded">${escapeHtml(state.settings.adminPassword)}</code> (dapat diubah di Menu 6 Setting).
+          </div>
+
+          <div id="login-error-msg" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-bold text-rose-700"></div>
+
+          <div class="flex justify-end gap-3 pt-2">
+            <button type="button" id="cancel-login-modal" class="btn-3d theme-slate px-5 py-2.5 text-sm">Batal</button>
+            <button type="submit" class="btn-3d theme-indigo px-6 py-2.5 text-sm">Masuk Sebagai Admin</button>
+          </div>
+        </form>
+      `, "max-w-md");
+
+      document.getElementById("close-login-modal").onclick = closeModal;
+      document.getElementById("cancel-login-modal").onclick = closeModal;
+      document.getElementById("form-admin-login").onsubmit = (e) => {
+        e.preventDefault();
+        const u = document.getElementById("login-username").value.trim();
+        const p = document.getElementById("login-password").value;
+        const errBox = document.getElementById("login-error-msg");
+
+        if (u === state.settings.adminUsername && p === state.settings.adminPassword) {
+          state.isAdminLoggedIn = true;
+          closeModal();
+          renderAuthUI();
+          showToast("Login Admin Berhasil", "Selamat datang kembali, Pengelola Sarpras!", "success");
+          if (typeof onSuccessCallback === "function") {
+            onSuccessCallback();
+          } else {
+            renderCurrentView();
+          }
+        } else {
+          errBox.textContent = "Username atau Password Admin salah. Silakan periksa kembali.";
+          errBox.classList.remove("hidden");
+        }
+      };
+    }
+
+    function logoutAdmin() {
+      state.isAdminLoggedIn = false;
+      state.loanViewMode = "borrower";
+      renderAuthUI();
+      showToast("Logout Berhasil", "Anda beralih ke Mode Pengunjung / Guru.", "info");
+      renderCurrentView();
+    }
+
+    function requireAdminAction(actionCallback) {
+      if (state.isAdminLoggedIn) {
+        actionCallback();
+      } else {
+        showToast("Akses Terbatas", "Silakan login sebagai Admin Sarpras terlebih dahulu.", "warning");
+        openAdminLoginModal(actionCallback);
+      }
+    }
+
+    // =========================================================================
+    // 5. INISIALISASI FIREBASE & SINKRONISASI REALTIME (DYNAMIC SAFE IMPORT)
+    // =========================================================================
+    async function initFirebaseBackend() {
+      const statusDot = document.getElementById("sidebar-status-dot");
+      const statusText = document.getElementById("sidebar-status-text");
+
+      const isPlaceholderConfig =
+        !firebaseConfig ||
+        !firebaseConfig.apiKey ||
+        firebaseConfig.apiKey === "GANTI_DENGAN_API_KEY_ANDA";
+
+      if (isPlaceholderConfig) {
+        enableDemoMode("Mode Simulasi Aktif (Kunci Firebase belum diisi).");
+        return;
+      }
+
+      try {
+        const [appMod, authMod, fsMod, stMod] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js")
+        ]);
+
+        state.fsModules = {
+          doc: fsMod.doc,
+          setDoc: fsMod.setDoc,
+          addDoc: fsMod.addDoc,
+          updateDoc: fsMod.updateDoc,
+          deleteDoc: fsMod.deleteDoc,
+          onSnapshot: fsMod.onSnapshot,
+          collection: fsMod.collection,
+          storageRef: stMod.ref,
+          uploadBytes: stMod.uploadBytes,
+          getDownloadURL: stMod.getDownloadURL
+        };
+
+        const app = appMod.initializeApp(firebaseConfig);
+        state.auth = authMod.getAuth(app);
+        state.db = fsMod.getFirestore(app);
+        state.storage = stMod.getStorage(app);
+
+        if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+          await authMod.signInWithCustomToken(state.auth, __initial_auth_token);
+        } else {
+          await authMod.signInAnonymously(state.auth);
+        }
+
+        state.currentUser = state.auth.currentUser;
+        state.isDemoMode = false;
+
+        if (statusDot) {
+          statusDot.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Terhubung`;
+          statusDot.className = "inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600";
+        }
+        if (statusText) {
+          statusText.textContent = "Cloud Firestore aktif & tersinkronisasi realtime.";
+        }
+
+        attachFirestoreListeners();
+      } catch (err) {
+        console.error("Gagal inisialisasi Firebase:", err);
+        enableDemoMode("Beralih ke Mode Simulasi Lokal (Offline/Sandbox).");
+      }
+    }
+
+    function attachFirestoreListeners() {
+      if (!state.db || !state.currentUser || !state.fsModules) return;
+      const { doc, onSnapshot, collection } = state.fsModules;
+
+      const invCol = collection(state.db, "artifacts", appId, "public", "data", "inventory");
+      onSnapshot(
+        invCol,
+        (snapshot) => {
+          state.inventory = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+          state.inventory.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+          renderCurrentView();
+        },
+        (error) => console.error("Error listener inventaris:", error)
+      );
+
+      const loanCol = collection(state.db, "artifacts", appId, "public", "data", "loans");
+      onSnapshot(
+        loanCol,
+        (snapshot) => {
+          state.loans = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+          state.loans.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+          if (!state.selectedLetterLoanId && state.loans.length > 0) {
+            state.selectedLetterLoanId = state.loans[0].id;
+          }
+          renderCurrentView();
+        },
+        (error) => console.error("Error listener peminjaman:", error)
+      );
+
+      const settingsDoc = doc(state.db, "artifacts", appId, "public", "data", "settings", "general");
+      onSnapshot(
+        settingsDoc,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            state.settings = { ...state.settings, ...docSnap.data() };
+            updateHeaderSchoolBadge();
+            renderCurrentView();
+          }
+        },
+        (error) => console.error("Error listener settings:", error)
+      );
+    }
+
+    function enableDemoMode(reasonText) {
+      state.isDemoMode = true;
+      const statusDot = document.getElementById("sidebar-status-dot");
+      const statusText = document.getElementById("sidebar-status-text");
+      if (statusDot) {
+        statusDot.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Simulasi`;
+        statusDot.className = "inline-flex items-center gap-1.5 text-xs font-bold text-amber-600";
+      }
+      if (statusText) statusText.textContent = reasonText;
+
+      if (state.inventory.length === 0) {
+        loadDefaultSampleData();
+      }
+      renderCurrentView();
+    }
+
+    function loadDefaultSampleData() {
+      const now = new Date();
+      const plus1h = new Date(now.getTime() + 60 * 60 * 1000);
+      const plus2h = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      const minus30m = new Date(now.getTime() - 30 * 60 * 1000);
+
+      const pad = (n) => String(n).padStart(2, "0");
+      const toLocalInput = (d) =>
+        `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+      state.inventory = [
+        {
+          id: "inv-001",
+          code: "INV-2026-001",
+          name: "Proyektor Epson EB-X500 XGA",
+          category: "Elektronik & IT",
+          totalQty: 8,
+          availableQty: 6,
+          condition: "Baik",
+          location: "Lemari Elektronik Sarpras Lt. 1",
+          imageUrl: "",
+          description: "Resolusi XGA 3600 Lumens lengkap dengan kabel HDMI & tas."
+        },
+        {
+          id: "inv-002",
+          code: "INV-2026-002",
+          name: "Aula Utama & Sound System",
+          category: "Ruangan & Aula",
+          totalQty: 1,
+          availableQty: 0,
+          condition: "Baik",
+          location: "Gedung Utama Lantai 2",
+          imageUrl: "",
+          description: "Kapasitas 300 orang, AC sentral, 4 mic wireless & mixer audio."
+        },
+        {
+          id: "inv-003",
+          code: "INV-2026-003",
+          name: "Mikroskop Binokuler Olympus",
+          category: "Alat Laboratorium",
+          totalQty: 15,
+          availableQty: 14,
+          condition: "Baik",
+          location: "Laboratorium Biologi",
+          imageUrl: "",
+          description: "Pembesaran hingga 1000x dengan lampu LED internal."
+        },
+        {
+          id: "inv-004",
+          code: "INV-2026-004",
+          name: "Laptop Praktikum Lenovo ThinkPad",
+          category: "Elektronik & IT",
+          totalQty: 20,
+          availableQty: 18,
+          condition: "Baik",
+          location: "Lab Komputer 1",
+          imageUrl: "",
+          description: "Core i5, RAM 16GB, SSD 512GB siap ujian & coding."
+        },
+        {
+          id: "inv-005",
+          code: "INV-2026-005",
+          name: "Speaker Portable Wireless 15 Inch",
+          category: "Olahraga & Seni",
+          totalQty: 4,
+          availableQty: 3,
+          condition: "Rusak Ringan",
+          location: "Gudang Sarpras Barat",
+          imageUrl: "",
+          description: "Baterai tahan 5 jam, 1 unit perlu penggantian kabel charger."
+        }
+      ];
+
+      state.loans = [
+        {
+          id: "loan-001",
+          letterNumber: "001/SARPRAS/XI/2026",
+          borrowerName: "Budi Santoso, S.Pd., M.Pd.",
+          borrowerNip: "19820412 200903 1 004",
+          borrowerSubject: "Guru Fisika",
+          borrowerPhone: "0812-3456-7890",
+          loanType: "Barang Inventaris",
+          itemId: "inv-001",
+          itemName: "Proyektor Epson EB-X500 XGA",
+          quantity: 2,
+          startTime: toLocalInput(minus30m),
+          endTime: toLocalInput(plus1h),
+          purpose: "Presentasi Praktikum Gelombang Optik Kelas XI IPA 2",
+          status: "Disetujui / Aktif",
+          createdAt: new Date(now.getTime() - 3600000).toISOString()
+        },
+        {
+          id: "loan-002",
+          letterNumber: "002/SARPRAS/XI/2026",
+          borrowerName: "Siti Aminah, S.Si.",
+          borrowerNip: "19881105 201402 2 002",
+          borrowerSubject: "Guru Biologi",
+          borrowerPhone: "0813-9876-5432",
+          loanType: "Ruangan & Barang",
+          itemId: "inv-002",
+          itemName: "Aula Utama & Sound System",
+          quantity: 1,
+          startTime: toLocalInput(now),
+          endTime: toLocalInput(plus2h),
+          purpose: "Seminar Karya Ilmiah Remaja & Penyuluhan Kesehatan",
+          status: "Disetujui / Aktif",
+          createdAt: new Date(now.getTime() - 1800000).toISOString()
+        },
+        {
+          id: "loan-003",
+          letterNumber: "003/SARPRAS/XI/2026",
+          borrowerName: "Ahmad Fauzi, S.Kom.",
+          borrowerNip: "19910321 201903 1 007",
+          borrowerSubject: "Guru Informatika",
+          borrowerPhone: "0857-1122-3344",
+          loanType: "Barang Inventaris",
+          itemId: "inv-004",
+          itemName: "Laptop Praktikum Lenovo ThinkPad",
+          quantity: 5,
+          startTime: toLocalInput(plus1h),
+          endTime: toLocalInput(plus2h),
+          purpose: "Pelatihan Olimpiade Sains Nasional (OSN) Komputer",
+          status: "Menunggu Konfirmasi",
+          createdAt: now.toISOString()
+        }
+      ];
+
+      state.selectedLetterLoanId = "loan-003";
+    }
+
+    // =========================================================================
+    // 6. OPERASI DATABASE CRUD (FIRESTORE & FALLBACK DEMO)
+    // =========================================================================
+    async function saveInventoryItem(data, existingId = null) {
+      const payload = {
+        code: data.code.trim(),
+        name: data.name.trim(),
+        category: data.category,
+        totalQty: Math.max(1, parseInt(data.totalQty, 10) || 1),
+        availableQty: Math.max(0, Math.min(parseInt(data.totalQty, 10) || 1, parseInt(data.availableQty, 10) || 0)),
+        condition: data.condition,
+        location: data.location.trim(),
+        imageUrl: (data.imageUrl || "").trim(),
+        description: (data.description || "").trim(),
+        updatedAt: new Date().toISOString()
+      };
+
+      if (state.isDemoMode) {
+        if (existingId) {
+          const idx = state.inventory.findIndex((i) => i.id === existingId);
+          if (idx > -1) state.inventory[idx] = { ...state.inventory[idx], ...payload };
+        } else {
+          state.inventory.unshift({ id: "inv-" + Date.now(), ...payload });
+        }
+        renderCurrentView();
+        showToast("Berhasil Disimpan", `Data inventaris "${payload.name}" diperbarui.`);
+        return;
+      }
+
+      try {
+        const { doc, addDoc, updateDoc, collection } = state.fsModules;
+        if (existingId) {
+          const ref = doc(state.db, "artifacts", appId, "public", "data", "inventory", existingId);
+          await updateDoc(ref, payload);
+        } else {
+          const col = collection(state.db, "artifacts", appId, "public", "data", "inventory");
+          await addDoc(col, payload);
+        }
+        showToast("Tersimpan ke Cloud", `Inventaris "${payload.name}" berhasil disimpan.`);
+      } catch (err) {
+        console.error(err);
+        showToast("Gagal Menyimpan", err.message, "error");
+      }
+    }
+
+    async function deleteInventoryItem(item) {
+      if (state.isDemoMode) {
+        state.inventory = state.inventory.filter((i) => i.id !== item.id);
+        renderCurrentView();
+        showToast("Item Dihapus", `"${item.name}" telah dihapus dari inventaris.`, "warning");
+        return;
+      }
+      try {
+        const { doc, deleteDoc } = state.fsModules;
+        const ref = doc(state.db, "artifacts", appId, "public", "data", "inventory", item.id);
+        await deleteDoc(ref);
+        showToast("Item Dihapus", `"${item.name}" berhasil dihapus dari Cloud.`, "warning");
+      } catch (err) {
+        showToast("Gagal Menghapus", err.message, "error");
+      }
+    }
+
+    async function adjustInventoryStock(itemId, delta) {
+      const target = state.inventory.find((i) => i.id === itemId);
+      if (!target) return;
+      const nextAvail = Math.max(0, Math.min(target.totalQty, (Number(target.availableQty) || 0) + delta));
+
+      if (state.isDemoMode) {
+        target.availableQty = nextAvail;
+        return;
+      }
+      try {
+        const { doc, updateDoc } = state.fsModules;
+        const ref = doc(state.db, "artifacts", appId, "public", "data", "inventory", itemId);
+        await updateDoc(ref, { availableQty: nextAvail });
+      } catch (err) {
+        console.error("Gagal menyesuaikan stok:", err);
+      }
+    }
+
+    async function saveLoan(data, existingId = null) {
+      const selectedInv = state.inventory.find((i) => i.id === data.itemId);
+      const qty = Math.max(1, parseInt(data.quantity, 10) || 1);
+      const prevLoan = existingId ? state.loans.find((l) => l.id === existingId) : null;
+
+      const payload = {
+        letterNumber: data.letterNumber.trim(),
+        borrowerName: data.borrowerName.trim(),
+        borrowerNip: (data.borrowerNip || "").trim(),
+        borrowerSubject: (data.borrowerSubject || "").trim(),
+        borrowerPhone: (data.borrowerPhone || "").trim(),
+        loanType: data.loanType,
+        itemId: data.itemId,
+        itemName: selectedInv ? selectedInv.name : data.itemName || "Item Sarpras",
+        quantity: qty,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        purpose: data.purpose.trim(),
+        status: data.status,
+        createdAt: prevLoan ? prevLoan.createdAt : new Date().toISOString()
+      };
+
+      const wasActive = prevLoan && prevLoan.status === "Disetujui / Aktif";
+      const isNowActive = payload.status === "Disetujui / Aktif";
+
+      if (!wasActive && isNowActive && payload.itemId) {
+        await adjustInventoryStock(payload.itemId, -qty);
+      } else if (wasActive && !isNowActive && prevLoan.itemId) {
+        await adjustInventoryStock(prevLoan.itemId, prevLoan.quantity);
+      }
+
+      if (state.isDemoMode) {
+        if (existingId) {
+          const idx = state.loans.findIndex((l) => l.id === existingId);
+          if (idx > -1) state.loans[idx] = { ...state.loans[idx], ...payload };
+        } else {
+          const newId = "loan-" + Date.now();
+          state.loans.unshift({ id: newId, ...payload });
+          state.selectedLetterLoanId = newId;
+        }
+        renderCurrentView();
+        showToast("Peminjaman Tersimpan", `Surat ${payload.letterNumber} berhasil dicatat.`);
+        return;
+      }
+
+      try {
+        const { doc, addDoc, updateDoc, collection } = state.fsModules;
+        if (existingId) {
+          const ref = doc(state.db, "artifacts", appId, "public", "data", "loans", existingId);
+          await updateDoc(ref, payload);
+        } else {
+          const col = collection(state.db, "artifacts", appId, "public", "data", "loans");
+          const created = await addDoc(col, payload);
+          state.selectedLetterLoanId = created.id;
+        }
+        showToast("Peminjaman Tersimpan", `Data peminjaman oleh ${payload.borrowerName} berhasil disimpan.`);
+      } catch (err) {
+        showToast("Gagal Menyimpan Peminjaman", err.message, "error");
+      }
+    }
+
+    async function quickUpdateLoanStatus(loanId, nextStatus) {
+      const loan = state.loans.find((l) => l.id === loanId);
+      if (!loan) return;
+      await saveLoan({ ...loan, status: nextStatus }, loanId);
+    }
+
+    async function deleteLoan(loan) {
+      if (loan.status === "Disetujui / Aktif" && loan.itemId) {
+        await adjustInventoryStock(loan.itemId, loan.quantity);
+      }
+      if (state.isDemoMode) {
+        state.loans = state.loans.filter((l) => l.id !== loan.id);
+        renderCurrentView();
+        showToast("Transaksi Dihapus", `Peminjaman ${loan.letterNumber} telah dihapus.`, "warning");
+        return;
+      }
+      try {
+        const { doc, deleteDoc } = state.fsModules;
+        const ref = doc(state.db, "artifacts", appId, "public", "data", "loans", loan.id);
+        await deleteDoc(ref);
+        showToast("Transaksi Dihapus", `Peminjaman ${loan.letterNumber} dihapus dari Cloud.`, "warning");
+      } catch (err) {
+        showToast("Gagal Menghapus", err.message, "error");
+      }
+    }
+
+    async function saveSettings(newSettings) {
+      state.settings = { ...state.settings, ...newSettings };
+      updateHeaderSchoolBadge();
+
+      if (state.isDemoMode) {
+        renderCurrentView();
+        showToast("Pengaturan Disimpan", "Identitas instansi & akun admin diperbarui.");
+        return;
+      }
+
+      try {
+        const { doc, setDoc } = state.fsModules;
+        const settingsDoc = doc(state.db, "artifacts", appId, "public", "data", "settings", "general");
+        await setDoc(settingsDoc, state.settings, { merge: true });
+        showToast("Pengaturan Tersimpan", "Konfigurasi Sarpras tersimpan ke Firebase Cloud.");
+      } catch (err) {
+        showToast("Gagal Menyimpan Setting", err.message, "error");
+      }
+    }
+
+    async function seedSampleDataToDatabase() {
+      loadDefaultSampleData();
+      if (state.isDemoMode) {
+        renderCurrentView();
+        showToast("Data Simulasi Dimuat", "5 item inventaris & 3 transaksi peminjaman ditambahkan.");
+        return;
+      }
+
+      try {
+        const { addDoc, collection } = state.fsModules;
+        const invCol = collection(state.db, "artifacts", appId, "public", "data", "inventory");
+        const createdInvIds = [];
+        for (const item of state.inventory) {
+          const { id, ...cleanItem } = item;
+          const docRef = await addDoc(invCol, cleanItem);
+          createdInvIds.push({ id: docRef.id, name: cleanItem.name });
+        }
+
+        const loanCol = collection(state.db, "artifacts", appId, "public", "data", "loans");
+        for (let i = 0; i < state.loans.length; i++) {
+          const { id, ...cleanLoan } = state.loans[i];
+          if (createdInvIds[i]) {
+            cleanLoan.itemId = createdInvIds[i].id;
+            cleanLoan.itemName = createdInvIds[i].name;
+          }
+          await addDoc(loanCol, cleanLoan);
+        }
+        showToast("Seed Berhasil", "Data contoh Sarpras berhasil diunggah ke Firestore!");
+      } catch (err) {
+        showToast("Gagal Seed Data", err.message, "error");
+      }
+    }
+
+    // =========================================================================
+    // 7. NAVIGASI & HEADER WORKSPACE
+    // =========================================================================
+    function renderSidebar() {
+      const nav = document.getElementById("sidebar-nav");
+      nav.innerHTML = MENUS.map((menu) => {
+        const isActive = state.activeMenu === menu.id;
+        return `
+          <button
+            type="button"
+            data-menu-id="${menu.id}"
+            class="w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3.5 transition-all duration-150 ${
+              isActive
+                ? `${menu.theme} scale-[1.02]`
+                : "bg-slate-50/90 hover:bg-slate-100 text-slate-700 border-2 border-slate-200/80"
+            }"
+          >
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+              isActive ? "bg-white/20 text-white" : `${menu.theme}`
+            }">
+              ${menu.icon}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="text-[10px] font-extrabold uppercase tracking-wider ${
+                isActive ? "text-white/80" : "text-slate-400"
+              }">Menu ${menu.number}</div>
+              <div class="font-display font-bold text-sm truncate">${menu.title}</div>
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      nav.querySelectorAll("button[data-menu-id]").forEach((btn) => {
+        btn.onclick = () => {
+          setActiveMenu(btn.getAttribute("data-menu-id"));
+          closeMobileSidebar();
+        };
+      });
+    }
+
+    function setActiveMenu(menuId) {
+      state.activeMenu = menuId;
+      const current = MENUS.find((m) => m.id === menuId) || MENUS[0];
+
+      const iconBox = document.getElementById("header-menu-icon");
+      iconBox.className = `w-12 h-12 rounded-2xl ${current.theme} flex items-center justify-center shrink-0`;
+      iconBox.innerHTML = current.icon;
+
+      document.getElementById("header-menu-title").textContent = current.title;
+      document.getElementById("header-menu-subtitle").textContent = current.subtitle;
+      document.getElementById("mobile-subtitle").textContent = current.title;
+
+      const badge = document.getElementById("header-school-badge");
+      badge.className = `px-2.5 py-0.5 rounded-full text-xs font-bold ${current.badgeBg}`;
+      badge.textContent = state.settings.schoolName;
+
+      renderSidebar();
+      renderCurrentView();
+    }
+
+    function updateHeaderSchoolBadge() {
+      const badge = document.getElementById("header-school-badge");
+      if (badge) badge.textContent = state.settings.schoolName;
+    }
+
+    function openMobileSidebar() {
+      document.getElementById("sidebar").classList.remove("-translate-x-full");
+      document.getElementById("sidebar-backdrop").classList.remove("hidden");
+    }
+
+    function closeMobileSidebar() {
+      document.getElementById("sidebar").classList.add("-translate-x-full");
+      document.getElementById("sidebar-backdrop").classList.add("hidden");
+    }
+
+    // =========================================================================
+    // 8. RENDERER SETIAP HALAMAN DASBOR (6 MENU)
+    // =========================================================================
+    function renderCurrentView() {
+      const viewContainer = document.getElementById("app-view");
+      if (!viewContainer) return;
+
+      switch (state.activeMenu) {
+        case "inventaris":
+          viewContainer.innerHTML = renderInventarisView();
+          bindInventarisEvents();
+          break;
+        case "peminjaman":
+          viewContainer.innerHTML = renderPeminjamanView();
+          bindPeminjamanEvents();
+          break;
+        case "surat":
+          viewContainer.innerHTML = renderSuratView();
+          bindSuratEvents();
+          break;
+        case "realtime":
+          viewContainer.innerHTML = renderRealtimeView();
+          bindRealtimeEvents();
+          break;
+        case "galeri":
+          viewContainer.innerHTML = renderGaleriView();
+          bindGaleriEvents();
+          break;
+        case "setting":
+          viewContainer.innerHTML = renderSettingView();
+          bindSettingEvents();
+          break;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 1: DATA INVENTARIS BARANG (CRUD ELEGAN + UPLOAD FOTO + KARTU ASET)
+    // -------------------------------------------------------------------------
+    function renderInventarisView() {
+      const totalJenis = state.inventory.length;
+      const totalUnit = state.inventory.reduce((acc, i) => acc + (Number(i.totalQty) || 0), 0);
+      const totalTersedia = state.inventory.reduce((acc, i) => acc + (Number(i.availableQty) || 0), 0);
+      const totalRusak = state.inventory.filter((i) => i.condition !== "Baik").length;
+
+      const filtered = state.inventory.filter((item) => {
+        const q = state.searchInventory.toLowerCase();
+        const matchQuery =
+          !q ||
+          (item.name || "").toLowerCase().includes(q) ||
+          (item.code || "").toLowerCase().includes(q) ||
+          (item.location || "").toLowerCase().includes(q);
+        const matchCat = state.filterCategory === "Semua" || item.category === state.filterCategory;
+        const matchCond = state.filterCondition === "Semua" || item.condition === state.filterCondition;
+        return matchQuery && matchCat && matchCond;
+      });
+
+      return `
+        <!-- 4 KPI 3D Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+          <div class="card-3d card-3d-hover p-5 border-b-blue-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Jenis Aset</p>
+                <p class="font-display font-extrabold text-3xl text-slate-900 mt-1">${totalJenis}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-blue flex items-center justify-center font-display font-extrabold text-lg">ID</div>
+            </div>
+            <p class="text-xs text-blue-600 font-semibold mt-3">Terdaftar dalam katalog Sarpras</p>
+          </div>
+
+          <div class="card-3d card-3d-hover p-5 border-b-cyan-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Unit</p>
+                <p class="font-display font-extrabold text-3xl text-slate-900 mt-1">${totalUnit}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-400 text-white flex items-center justify-center font-display font-extrabold text-lg shadow-md">Σ</div>
+            </div>
+            <p class="text-xs text-cyan-700 font-semibold mt-3">Akumulasi seluruh barang & ruang</p>
+          </div>
+
+          <div class="card-3d card-3d-hover p-5 border-b-emerald-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Unit Tersedia</p>
+                <p class="font-display font-extrabold text-3xl text-emerald-600 mt-1">${totalTersedia}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-emerald flex items-center justify-center font-display font-extrabold text-lg">✓</div>
+            </div>
+            <p class="text-xs text-emerald-600 font-semibold mt-3">Siap dipinjam guru & kegiatan</p>
+          </div>
+
+          <div class="card-3d card-3d-hover p-5 border-b-amber-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Perlu Perawatan</p>
+                <p class="font-display font-extrabold text-3xl text-amber-600 mt-1">${totalRusak}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-amber flex items-center justify-center font-display font-extrabold text-lg">!</div>
+            </div>
+            <p class="text-xs text-amber-700 font-semibold mt-3">Item kondisi rusak ringan/berat</p>
+          </div>
+        </div>
+
+        <!-- Toolbar Pencarian, Filter, Cetak Kartu & Tambah Barang -->
+        <div class="card-3d p-5 mb-6">
+          <div class="flex flex-col xl:flex-row gap-3.5 justify-between">
+            <div class="flex flex-col sm:flex-row gap-3 flex-1">
+              <div class="relative flex-1">
+                <input id="inv-search-input" type="text" value="${escapeHtml(state.searchInventory)}" placeholder="Cari kode, nama barang, atau lokasi..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-medium" />
+                <svg class="w-5 h-5 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+
+              <select id="inv-filter-cat" class="px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-semibold bg-white">
+                <option value="Semua" ${state.filterCategory === "Semua" ? "selected" : ""}>Semua Kategori</option>
+                <option value="Elektronik & IT" ${state.filterCategory === "Elektronik & IT" ? "selected" : ""}>Elektronik & IT</option>
+                <option value="Ruangan & Aula" ${state.filterCategory === "Ruangan & Aula" ? "selected" : ""}>Ruangan & Aula</option>
+                <option value="Alat Laboratorium" ${state.filterCategory === "Alat Laboratorium" ? "selected" : ""}>Alat Laboratorium</option>
+                <option value="Furnitur" ${state.filterCategory === "Furnitur" ? "selected" : ""}>Furnitur</option>
+                <option value="Olahraga & Seni" ${state.filterCategory === "Olahraga & Seni" ? "selected" : ""}>Olahraga & Seni</option>
+                <option value="Lainnya" ${state.filterCategory === "Lainnya" ? "selected" : ""}>Lainnya</option>
+              </select>
+
+              <select id="inv-filter-cond" class="px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-semibold bg-white">
+                <option value="Semua" ${state.filterCondition === "Semua" ? "selected" : ""}>Semua Kondisi</option>
+                <option value="Baik" ${state.filterCondition === "Baik" ? "selected" : ""}>Baik</option>
+                <option value="Rusak Ringan" ${state.filterCondition === "Rusak Ringan" ? "selected" : ""}>Rusak Ringan</option>
+                <option value="Rusak Berat" ${state.filterCondition === "Rusak Berat" ? "selected" : ""}>Rusak Berat</option>
+              </select>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5">
+              ${
+                filtered.length > 0
+                  ? `<button type="button" id="btn-print-all-cards" class="btn-3d theme-amber px-4 py-2.5 text-sm">
+                      <span>🪪 Cetak Semua Kartu (${filtered.length})</span>
+                    </button>`
+                  : ""
+              }
+              ${state.inventory.length === 0 ? `
+                <button type="button" id="btn-seed-data" class="btn-3d theme-slate px-4 py-2.5 text-sm">
+                  <span>Isi Data Contoh</span>
+                </button>
+              ` : ""}
+              <button type="button" id="btn-add-inventory" class="btn-3d theme-blue px-5 py-2.5 text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>${state.isAdminLoggedIn ? "Tambah Inventaris" : "🔒 Tambah (Admin)"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabel Data Inventaris dengan Foto Thumbnail & Tombol Cetak Kartu -->
+        <div class="card-3d overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs uppercase tracking-wider">
+                  <th class="py-4 px-5 font-extrabold">Foto & Kode Barang</th>
+                  <th class="py-4 px-4 font-extrabold">Kategori & Lokasi</th>
+                  <th class="py-4 px-4 font-extrabold">Ketersediaan Stok</th>
+                  <th class="py-4 px-4 font-extrabold">Kondisi</th>
+                  <th class="py-4 px-5 font-extrabold text-right">Kartu & Aksi CRUD</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-sm">
+                ${
+                  filtered.length === 0
+                    ? `<tr>
+                        <td colspan="5" class="py-12 px-6 text-center text-slate-500">
+                          <p class="font-display font-bold text-base text-slate-700 mb-1">Belum ada data inventaris yang sesuai</p>
+                          <p class="text-xs">Klik tombol <strong>Tambah Inventaris</strong> atau <strong>Isi Data Contoh</strong> untuk memulai.</p>
+                        </td>
+                      </tr>`
+                    : filtered
+                        .map((item) => {
+                          const pct = item.totalQty > 0 ? Math.round((item.availableQty / item.totalQty) * 100) : 0;
+                          const condBadge =
+                            item.condition === "Baik"
+                              ? "bg-emerald-100 text-emerald-700 border-emerald-300"
+                              : item.condition === "Rusak Ringan"
+                              ? "bg-amber-100 text-amber-700 border-amber-300"
+                              : "bg-rose-100 text-rose-700 border-rose-300";
+                          const illus = getCategoryIllustrationSVG(item.category, "w-7 h-7");
+                          const hasPhoto = item.imageUrl && item.imageUrl.trim().length > 4;
+
+                          return `
+                            <tr class="hover:bg-blue-50/50 transition-colors">
+                              <td class="py-4 px-5">
+                                <div class="flex items-center gap-3.5">
+                                  <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${illus.bg} flex items-center justify-center overflow-hidden shrink-0 border-2 border-white shadow-md">
+                                    ${
+                                      hasPhoto
+                                        ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                           <div style="display:none" class="w-full h-full items-center justify-center">${illus.svg}</div>`
+                                        : illus.svg
+                                    }
+                                  </div>
+                                  <div class="min-w-0">
+                                    <span class="inline-block px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 font-mono text-[11px] font-bold mb-1">${escapeHtml(item.code)}</span>
+                                    <div class="font-display font-bold text-slate-900">${escapeHtml(item.name)}</div>
+                                    <div class="text-xs text-slate-500 line-clamp-1">${escapeHtml(item.description || "-")}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="py-4 px-4">
+                                <span class="inline-block px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-semibold text-xs mb-1">${escapeHtml(item.category)}</span>
+                                <div class="text-xs font-semibold text-slate-600">📍 ${escapeHtml(item.location)}</div>
+                              </td>
+                              <td class="py-4 px-4 min-w-[160px]">
+                                <div class="flex justify-between text-xs font-bold mb-1">
+                                  <span class="${item.availableQty > 0 ? "text-emerald-600" : "text-rose-600"}">${item.availableQty} Tersedia</span>
+                                  <span class="text-slate-400">/ ${item.totalQty} Unit</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                                  <div class="h-full rounded-full ${item.availableQty > 0 ? "bg-gradient-to-r from-blue-500 to-cyan-400" : "bg-rose-500"}" style="width: ${pct}%"></div>
+                                </div>
+                              </td>
+                              <td class="py-4 px-4">
+                                <span class="px-2.5 py-1 rounded-full border text-xs font-bold ${condBadge}">${escapeHtml(item.condition)}</span>
+                              </td>
+                              <td class="py-4 px-5 text-right whitespace-nowrap">
+                                <div class="inline-flex flex-wrap justify-end gap-2">
+                                  <button type="button" data-card-inv="${item.id}" class="btn-3d theme-amber px-3 py-1.5 text-xs" title="Cetak Kartu Inventaris Barang">
+                                    🪪 Kartu
+                                  </button>
+                                  ${
+                                    state.isAdminLoggedIn
+                                      ? `<button type="button" data-edit-inv="${item.id}" class="btn-3d theme-slate px-3 py-1.5 text-xs">Edit</button>
+                                         <button type="button" data-del-inv="${item.id}" class="btn-3d theme-rose px-3 py-1.5 text-xs">Hapus</button>`
+                                      : `<button type="button" data-edit-inv="${item.id}" class="btn-3d theme-slate px-3 py-1.5 text-xs opacity-80">🔒 Kelola</button>`
+                                  }
+                                </div>
+                              </td>
+                            </tr>
+                          `;
+                        })
+                        .join("")
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function openInventoryFormModal(editItem = null) {
+      const isEdit = Boolean(editItem);
+      const autoCode = `INV-${new Date().getFullYear()}-${String(state.inventory.length + 1).padStart(3, "0")}`;
+      const uploadedPhotoUrl = editItem ? editItem.imageUrl || "" : "";
+
+      openModal(`
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl theme-blue flex items-center justify-center text-white font-extrabold">+</div>
+            <div>
+              <h3 class="font-display font-extrabold text-xl text-slate-900">${isEdit ? "Edit Data Inventaris" : "Tambah Inventaris Baru"}</h3>
+              <p class="text-xs text-slate-500">Unggah foto barang & lengkapi rincian aset sarana prasarana.</p>
+            </div>
+          </div>
+          <button type="button" id="close-inv-modal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        </div>
+
+        <form id="form-inventory" class="space-y-4">
+          <!-- Upload Foto Barang Section -->
+          <div class="p-4 rounded-2xl bg-blue-50/70 border-2 border-dashed border-blue-300">
+            <label class="block text-xs font-extrabold uppercase text-blue-800 mb-2">Foto Barang / Ruangan Inventaris</label>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <div id="inv-photo-preview-box" class="w-24 h-24 rounded-2xl bg-white border-2 border-blue-200 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+                ${
+                  uploadedPhotoUrl
+                    ? `<img src="${escapeHtml(uploadedPhotoUrl)}" alt="Preview" class="w-full h-full object-cover" />`
+                    : `<span class="text-xs font-bold text-slate-400 text-center px-2">Belum Ada Foto</span>`
+                }
+              </div>
+              <div class="flex-1 w-full space-y-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <label class="btn-3d theme-blue px-4 py-2 text-xs cursor-pointer">
+                    <span>📷 Pilih / Upload Foto</span>
+                    <input id="inv-photo-file" type="file" accept="image/*" class="hidden" />
+                  </label>
+                  <button type="button" id="btn-clear-inv-photo" class="btn-3d theme-slate px-3 py-2 text-xs ${uploadedPhotoUrl ? "" : "hidden"}">Hapus Foto</button>
+                </div>
+                <p id="inv-upload-status" class="text-[11px] text-slate-600">Format JPG/PNG/WebP. Otomatis dikompresi agar cepat dimuat.</p>
+                <input id="inv-image-url-input" name="imageUrl" type="text" placeholder="Atau tempel tautan URL gambar (opsional)..." value="${escapeHtml(uploadedPhotoUrl)}" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-xs focus:border-blue-500 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Kode Inventaris</label>
+              <input name="code" type="text" required value="${escapeHtml(editItem ? editItem.code : autoCode)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-mono font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Kategori Aset</label>
+              <select name="category" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-semibold bg-white">
+                ${["Elektronik & IT", "Ruangan & Aula", "Alat Laboratorium", "Furnitur", "Olahraga & Seni", "Lainnya"]
+                  .map((c) => `<option value="${c}" ${editItem && editItem.category === c ? "selected" : ""}>${c}</option>`)
+                  .join("")}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Barang / Ruangan</label>
+            <input name="name" type="text" required placeholder="Contoh: Proyektor Epson EB-X500 atau Lab Komputer 1" value="${escapeHtml(editItem ? editItem.name : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-semibold" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jumlah Total</label>
+              <input name="totalQty" type="number" min="1" required value="${editItem ? editItem.totalQty : 1}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Unit Tersedia</label>
+              <input name="availableQty" type="number" min="0" required value="${editItem ? editItem.availableQty : 1}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Kondisi Fisik</label>
+              <select name="condition" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-semibold bg-white">
+                ${["Baik", "Rusak Ringan", "Rusak Berat"]
+                  .map((cond) => `<option value="${cond}" ${editItem && editItem.condition === cond ? "selected" : ""}>${cond}</option>`)
+                  .join("")}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Lokasi Penyimpanan</label>
+            <input name="location" type="text" required placeholder="Contoh: Ruang Sarpras Lt. 1" value="${escapeHtml(editItem ? editItem.location : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm font-medium" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Spesifikasi / Keterangan</label>
+            <textarea name="description" rows="2" placeholder="Catatan kelengkapan aksesori, merek, atau kondisi..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:outline-none text-sm">${escapeHtml(editItem ? editItem.description || "" : "")}</textarea>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-3 border-t border-slate-200">
+            <button type="button" id="cancel-inv-modal" class="btn-3d theme-slate px-5 py-2.5 text-sm">Batal</button>
+            <button type="submit" id="submit-inv-btn" class="btn-3d theme-blue px-6 py-2.5 text-sm">${isEdit ? "Simpan Perubahan" : "Simpan Inventaris"}</button>
+          </div>
+        </form>
+      `);
+
+      const previewBox = document.getElementById("inv-photo-preview-box");
+      const fileInput = document.getElementById("inv-photo-file");
+      const urlInput = document.getElementById("inv-image-url-input");
+      const clearBtn = document.getElementById("btn-clear-inv-photo");
+      const statusText = document.getElementById("inv-upload-status");
+      const submitBtn = document.getElementById("submit-inv-btn");
+
+      const updatePreviewDisplay = (url) => {
+        if (url && url.trim().length > 4) {
+          previewBox.innerHTML = `<img src="${escapeHtml(url)}" alt="Preview" class="w-full h-full object-cover" />`;
+          clearBtn.classList.remove("hidden");
+        } else {
+          previewBox.innerHTML = `<span class="text-xs font-bold text-slate-400 text-center px-2">Belum Ada Foto</span>`;
+          clearBtn.classList.add("hidden");
+        }
+      };
+
+      fileInput.onchange = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        statusText.textContent = "⏳ Mengompresi & mengunggah foto...";
+        submitBtn.disabled = true;
+        try {
+          const finalUrl = await uploadInventoryPhoto(file);
+          urlInput.value = finalUrl;
+          updatePreviewDisplay(finalUrl);
+          statusText.textContent = "✓ Foto berhasil siap disimpan!";
+        } catch (err) {
+          statusText.textContent = "✕ Gagal memproses file gambar.";
+          showToast("Gagal Upload Foto", err.message || "File tidak dapat diproses.", "error");
+        } finally {
+          submitBtn.disabled = false;
+        }
+      };
+
+      urlInput.oninput = (e) => updatePreviewDisplay(e.target.value);
+
+      clearBtn.onclick = () => {
+        urlInput.value = "";
+        fileInput.value = "";
+        updatePreviewDisplay("");
+        statusText.textContent = "Foto dihapus.";
+      };
+
+      document.getElementById("close-inv-modal").onclick = closeModal;
+      document.getElementById("cancel-inv-modal").onclick = closeModal;
+      document.getElementById("form-inventory").onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd.entries());
+        closeModal();
+        await saveInventoryItem(data, editItem ? editItem.id : null);
+      };
+    }
+
+    // -------------------------------------------------------------------------
+    // FITUR CETAK KARTU INVENTARIS BARANG (KIB / LABEL ASET SEKOLAH)
+    // -------------------------------------------------------------------------
+    function buildInventoryCardHTML(item) {
+      const illus = getCategoryIllustrationSVG(item.category, "w-10 h-10");
+      const hasPhoto = item.imageUrl && item.imageUrl.trim().length > 4;
+      const yearStr = new Date().getFullYear();
+
+      return `
+        <div class="border-2 border-slate-900 rounded-xl p-3.5 bg-white text-slate-900 flex flex-col justify-between break-inside-avoid shadow-xs">
+          <!-- Kop Kartu Inventaris -->
+          <div class="border-b-2 border-slate-900 pb-2 mb-2.5 flex items-center justify-between gap-2">
+            <div>
+              <div class="text-[9px] font-extrabold uppercase tracking-wider text-slate-600">${escapeHtml(state.settings.schoolName)}</div>
+              <div class="font-display font-extrabold text-xs uppercase text-slate-900">KARTU INVENTARIS BARANG (KIB)</div>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-slate-900 text-white font-mono text-[10px] font-bold">TH. ${yearStr}</span>
+          </div>
+
+          <!-- Isi Kartu: Foto + Identitas Aset -->
+          <div class="flex gap-3 items-center mb-2.5">
+            <div class="w-16 h-16 rounded-xl border border-slate-300 bg-gradient-to-br ${illus.bg} flex items-center justify-center overflow-hidden shrink-0">
+              ${
+                hasPhoto
+                  ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                     <div style="display:none" class="w-full h-full items-center justify-center">${illus.svg}</div>`
+                  : illus.svg
+              }
+            </div>
+            <div class="min-w-0 flex-1 text-[11px] space-y-0.5">
+              <div class="font-mono font-extrabold text-blue-800 text-xs">${escapeHtml(item.code)}</div>
+              <div class="font-display font-extrabold text-slate-900 text-xs leading-snug line-clamp-2">${escapeHtml(item.name)}</div>
+              <div class="text-slate-600"><strong>Kategori:</strong> ${escapeHtml(item.category)}</div>
+              <div class="text-slate-600"><strong>Lokasi:</strong> ${escapeHtml(item.location)}</div>
+            </div>
+          </div>
+
+          <!-- Footer Kartu: Kondisi, Barcode & Paraf Sarpras -->
+          <div class="pt-2 border-t border-dashed border-slate-400 flex items-center justify-between gap-2 text-[10px]">
+            <div>
+              <div>Kondisi: <strong>${escapeHtml(item.condition)}</strong> (${item.totalQty} Unit)</div>
+              <div class="text-slate-500 mt-0.5">Sarpras: ${escapeHtml(state.settings.sarprasHeadName)}</div>
+            </div>
+            <div class="text-center shrink-0">
+              ${generateBarcodeSVG(item.code)}
+              <div class="font-mono text-[8px] text-slate-500 mt-0.5">${escapeHtml(item.code)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function openInventoryCardPrintModal(itemsToPrint) {
+      if (!itemsToPrint || itemsToPrint.length === 0) return;
+      const cardsGridHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          ${itemsToPrint.map((it) => buildInventoryCardHTML(it)).join("")}
+        </div>
+      `;
+
+      openModal(`
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
+          <div>
+            <h3 class="font-display font-extrabold text-xl text-slate-900">Pratinjau Kartu Inventaris Barang (${itemsToPrint.length} Kartu)</h3>
+            <p class="text-xs text-slate-500">Siap dicetak pada kertas A4 / stiker label untuk ditempel pada barang & ruangan.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-execute-card-print" class="btn-3d theme-amber px-4 py-2 text-xs sm:text-sm">🖨 Cetak Sekarang</button>
+            <button type="button" id="close-card-modal" class="btn-3d theme-slate px-3.5 py-2 text-xs">Tutup</button>
+          </div>
+        </div>
+
+        <div class="max-h-[65vh] overflow-y-auto p-3 rounded-2xl bg-slate-100 border border-slate-200">
+          ${cardsGridHTML}
+        </div>
+      `, "max-w-4xl");
+
+      document.getElementById("close-card-modal").onclick = closeModal;
+      document.getElementById("btn-execute-card-print").onclick = () => {
+        const sheet = document.getElementById("card-print-sheet");
+        sheet.innerHTML = `
+          <div class="p-6">
+            <div class="text-center mb-4 pb-2 border-b-2 border-slate-900">
+              <h2 class="font-display font-extrabold text-base uppercase">${escapeHtml(state.settings.schoolName)} — LABEL KARTU INVENTARIS BARANG</h2>
+            </div>
+            ${cardsGridHTML}
+          </div>
+        `;
+        document.body.classList.add("print-card-mode");
+        window.print();
+        setTimeout(() => {
+          document.body.classList.remove("print-card-mode");
+          sheet.innerHTML = "";
+        }, 500);
+      };
+    }
+
+    function bindInventarisEvents() {
+      const searchEl = document.getElementById("inv-search-input");
+      if (searchEl) {
+        searchEl.oninput = (e) => {
+          state.searchInventory = e.target.value;
+          renderCurrentView();
+        };
+      }
+      const catEl = document.getElementById("inv-filter-cat");
+      if (catEl) {
+        catEl.onchange = (e) => {
+          state.filterCategory = e.target.value;
+          renderCurrentView();
+        };
+      }
+      const condEl = document.getElementById("inv-filter-cond");
+      if (condEl) {
+        condEl.onchange = (e) => {
+          state.filterCondition = e.target.value;
+          renderCurrentView();
+        };
+      }
+
+      const btnPrintAll = document.getElementById("btn-print-all-cards");
+      if (btnPrintAll) {
+        btnPrintAll.onclick = () => openInventoryCardPrintModal(state.inventory);
+      }
+
+      const btnAdd = document.getElementById("btn-add-inventory");
+      if (btnAdd) {
+        btnAdd.onclick = () => requireAdminAction(() => openInventoryFormModal(null));
+      }
+
+      const btnSeed = document.getElementById("btn-seed-data");
+      if (btnSeed) btnSeed.onclick = () => seedSampleDataToDatabase();
+
+      document.querySelectorAll("[data-card-inv]").forEach((btn) => {
+        btn.onclick = () => {
+          const item = state.inventory.find((i) => i.id === btn.getAttribute("data-card-inv"));
+          if (item) openInventoryCardPrintModal([item]);
+        };
+      });
+
+      document.querySelectorAll("[data-edit-inv]").forEach((btn) => {
+        btn.onclick = () => {
+          const item = state.inventory.find((i) => i.id === btn.getAttribute("data-edit-inv"));
+          if (item) requireAdminAction(() => openInventoryFormModal(item));
+        };
+      });
+
+      document.querySelectorAll("[data-del-inv]").forEach((btn) => {
+        btn.onclick = () => {
+          const item = state.inventory.find((i) => i.id === btn.getAttribute("data-del-inv"));
+          if (item) {
+            requireAdminAction(() => {
+              showConfirmModal(
+                "Hapus Data Inventaris?",
+                `Anda yakin ingin menghapus "${item.name}" (${item.code}) dari sistem Sarpras?`,
+                () => deleteInventoryItem(item)
+              );
+            });
+          }
+        };
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 2: PEMINJAMAN RUANG DAN BARANG (2 VERSI: PENGUNJUNG/PEMINJAM & ADMIN)
+    // -------------------------------------------------------------------------
+    function renderPeminjamanView() {
+      const isAdminTab = state.loanViewMode === "admin" && state.isAdminLoggedIn;
+
+      const modeSwitcherHTML = `
+        <div class="card-3d p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700">Pilih Tampilan Layanan Peminjaman</span>
+            <h3 class="font-display font-extrabold text-base text-slate-900">
+              ${isAdminTab ? "🛡️ Versi Admin Sarpras (Verifikasi & Kontrol Penuh)" : "🧑‍🏫 Versi Pengunjung / Peminjam (Portal Guru & Umum)"}
+            </h3>
+          </div>
+
+          <div class="flex flex-wrap gap-2.5">
+            <button type="button" id="btn-mode-borrower" class="btn-3d px-4 py-2.5 text-xs ${
+              !isAdminTab ? "theme-emerald" : "theme-slate"
+            }">
+              🧑‍🏫 Versi Pengunjung / Peminjam
+            </button>
+            <button type="button" id="btn-mode-admin" class="btn-3d px-4 py-2.5 text-xs ${
+              isAdminTab ? "theme-indigo" : "theme-slate"
+            }">
+              ${state.isAdminLoggedIn ? "🛡️ Versi Admin Sarpras" : "🔒 Versi Admin (Login)"}
+            </button>
+          </div>
+        </div>
+      `;
+
+      if (!isAdminTab) {
+        return modeSwitcherHTML + renderBorrowerLoanPortal();
+      }
+      return modeSwitcherHTML + renderAdminLoanDashboard();
+    }
+
+    // VERSI 1: PORTAL PENGUNJUNG / PEMINJAM (GURU & UMUM)
+    function renderBorrowerLoanPortal() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const toLocalInput = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      const defaultStart = toLocalInput(now);
+      const defaultEnd = toLocalInput(new Date(now.getTime() + 2 * 3600000));
+      const romanMonths = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+      const autoLetter = `${String(state.loans.length + 1).padStart(3, "0")}/SARPRAS/${romanMonths[now.getMonth()]}/${now.getFullYear()}`;
+      const chosenItemId = state.preselectedBorrowerItemId || (state.inventory.find((i) => i.availableQty > 0)?.id || state.inventory[0]?.id || "");
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Kolom Kiri: Formulir Pengajuan Mandiri oleh Peminjam -->
+          <div class="lg:col-span-6 card-3d p-6">
+            <div class="flex items-center gap-3 mb-5 pb-3 border-b border-slate-200">
+              <div class="w-11 h-11 rounded-2xl theme-emerald flex items-center justify-center text-white text-lg font-extrabold">✍️</div>
+              <div>
+                <h4 class="font-display font-extrabold text-lg text-slate-900">Formulir Pengajuan Peminjaman</h4>
+                <p class="text-xs text-slate-500">Isi data berikut untuk mengajukan peminjaman ruang/barang dan cetak surat konfirmasi.</p>
+              </div>
+            </div>
+
+            <form id="form-borrower-submit" class="space-y-4">
+              <input type="hidden" name="letterNumber" value="${escapeHtml(autoLetter)}" />
+              <input type="hidden" name="status" value="Menunggu Konfirmasi" />
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Guru / Peminjam *</label>
+                  <input name="borrowerName" type="text" required placeholder="Contoh: Dra. Ratna Sari, M.Pd." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jabatan / Mapel / Kelas *</label>
+                  <input name="borrowerSubject" type="text" required placeholder="Contoh: Guru Matematika" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">NIP (Opsional)</label>
+                  <input name="borrowerNip" type="text" placeholder="19870512 201402 2 001" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-mono" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nomor WhatsApp Aktif *</label>
+                  <input name="borrowerPhone" type="text" required placeholder="0812-3456-7890" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Pilih Barang / Ruangan *</label>
+                  <select name="itemId" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold bg-white">
+                    ${
+                      state.inventory.length === 0
+                        ? `<option value="">-- Belum ada data inventaris --</option>`
+                        : state.inventory
+                            .map(
+                              (item) =>
+                                `<option value="${item.id}" ${chosenItemId === item.id ? "selected" : ""}>${escapeHtml(item.name)} (Tersedia: ${item.availableQty})</option>`
+                            )
+                            .join("")
+                    }
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jumlah Unit *</label>
+                  <input name="quantity" type="number" min="1" required value="1" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-bold" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jenis Peminjaman</label>
+                  <select name="loanType" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold bg-white">
+                    <option value="Barang Inventaris">Barang Inventaris</option>
+                    <option value="Ruangan / Fasilitas">Ruangan / Fasilitas</option>
+                    <option value="Ruangan & Barang">Ruangan & Barang</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nomor Surat Otomatis</label>
+                  <input type="text" disabled value="${escapeHtml(autoLetter)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-100 bg-slate-50 text-slate-500 text-xs font-mono font-bold" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Waktu Mulai *</label>
+                  <input name="startTime" type="datetime-local" required value="${defaultStart}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Waktu Selesai *</label>
+                  <input name="endTime" type="datetime-local" required value="${defaultEnd}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Keperluan / Kegiatan *</label>
+                <textarea name="purpose" rows="2" required placeholder="Tuliskan nama kegiatan pembelajaran, praktikum, atau rapat..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm"></textarea>
+              </div>
+
+              <button type="submit" class="btn-3d theme-emerald w-full py-3 text-sm">
+                📨 Kirim Pengajuan & Buat Surat Konfirmasi
+              </button>
+            </form>
+          </div>
+
+          <!-- Kolom Kanan: Daftar Antrean & Status Pengajuan Peminjam -->
+          <div class="lg:col-span-6 space-y-4">
+            <div class="card-3d p-5">
+              <h4 class="font-display font-extrabold text-lg text-slate-900 mb-1">Daftar Status Peminjaman & Jadwal</h4>
+              <p class="text-xs text-slate-500 mb-4">Cetak surat pengajuan Anda dan serahkan/kirim ke Admin Sarpras untuk persetujuan.</p>
+
+              <div class="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                ${
+                  state.loans.length === 0
+                    ? `<div class="p-8 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl">Belum ada riwayat pengajuan peminjaman.</div>`
+                    : state.loans
+                        .map((loan) => {
+                          const badge =
+                            loan.status === "Disetujui / Aktif"
+                              ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                              : loan.status === "Menunggu Konfirmasi"
+                              ? "bg-amber-100 text-amber-800 border-amber-300"
+                              : loan.status === "Selesai / Dikembalikan"
+                              ? "bg-blue-100 text-blue-800 border-blue-300"
+                              : "bg-rose-100 text-rose-800 border-rose-300";
+
+                          return `
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-300 transition-all">
+                              <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <span class="font-mono text-xs font-bold text-slate-700">${escapeHtml(loan.letterNumber)}</span>
+                                <span class="px-2.5 py-0.5 rounded-full border text-[11px] font-extrabold ${badge}">${escapeHtml(loan.status)}</span>
+                              </div>
+                              <div class="font-display font-extrabold text-sm text-slate-900">${escapeHtml(loan.itemName)} (${loan.quantity} Unit)</div>
+                              <div class="text-xs text-slate-600 mt-0.5">Peminjam: <strong>${escapeHtml(loan.borrowerName)}</strong></div>
+                              <div class="text-[11px] text-slate-500 mt-0.5">Jadwal: ${formatDateTimeID(loan.startTime)} — ${formatDateTimeID(loan.endTime)}</div>
+                              <div class="mt-3 pt-2.5 border-t border-slate-100 flex justify-end">
+                                <button type="button" data-print-loan="${loan.id}" class="btn-3d theme-amber px-3.5 py-1.5 text-xs">
+                                  🖨 Cetak Surat Konfirmasi
+                                </button>
+                              </div>
+                            </div>
+                          `;
+                        })
+                        .join("")
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // VERSI 2: PANEL ADMIN SARPRAS (KELOLA, SETUJUI, TOLAK, KEMBALIKAN, EDIT, HAPUS)
+    function renderAdminLoanDashboard() {
+      const pendingCount = state.loans.filter((l) => l.status === "Menunggu Konfirmasi").length;
+      const activeCount = state.loans.filter((l) => l.status === "Disetujui / Aktif").length;
+      const doneCount = state.loans.filter((l) => l.status === "Selesai / Dikembalikan").length;
+
+      const filtered = state.loans.filter((loan) => {
+        const q = state.searchLoan.toLowerCase();
+        const matchQ =
+          !q ||
+          (loan.borrowerName || "").toLowerCase().includes(q) ||
+          (loan.itemName || "").toLowerCase().includes(q) ||
+          (loan.letterNumber || "").toLowerCase().includes(q) ||
+          (loan.purpose || "").toLowerCase().includes(q);
+        const matchStatus = state.filterLoanStatus === "Semua" || loan.status === state.filterLoanStatus;
+        return matchQ && matchStatus;
+      });
+
+      return `
+        <!-- Status Summary 3D Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+          <div class="card-3d card-3d-hover p-5 border-b-amber-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase text-slate-400">Menunggu Konfirmasi</p>
+                <p class="font-display font-extrabold text-3xl text-amber-600 mt-1">${pendingCount}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-amber flex items-center justify-center font-extrabold text-lg">⏳</div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Perlu validasi & cetak surat Sarpras</p>
+          </div>
+
+          <div class="card-3d card-3d-hover p-5 border-b-emerald-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase text-slate-400">Sedang Dipakai Guru</p>
+                <p class="font-display font-extrabold text-3xl text-emerald-600 mt-1">${activeCount}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-emerald flex items-center justify-center font-extrabold text-lg">▶</div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Terpantau aktif di dasbor realtime</p>
+          </div>
+
+          <div class="card-3d card-3d-hover p-5 border-b-blue-500">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase text-slate-400">Selesai / Dikembalikan</p>
+                <p class="font-display font-extrabold text-3xl text-blue-600 mt-1">${doneCount}</p>
+              </div>
+              <div class="w-12 h-12 rounded-2xl theme-blue flex items-center justify-center font-extrabold text-lg">✓</div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Stok barang telah kembali ke gudang</p>
+          </div>
+        </div>
+
+        <!-- Toolbar Admin Peminjaman -->
+        <div class="card-3d p-5 mb-6">
+          <div class="flex flex-col lg:flex-row gap-3.5 justify-between">
+            <div class="flex flex-col sm:flex-row gap-3 flex-1">
+              <input id="loan-search-input" type="text" value="${escapeHtml(state.searchLoan)}" placeholder="Cari nama guru, nomor surat, atau nama barang/ruang..." class="flex-1 px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-medium" />
+              <select id="loan-filter-status" class="px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold bg-white">
+                <option value="Semua" ${state.filterLoanStatus === "Semua" ? "selected" : ""}>Semua Status</option>
+                <option value="Menunggu Konfirmasi" ${state.filterLoanStatus === "Menunggu Konfirmasi" ? "selected" : ""}>Menunggu Konfirmasi</option>
+                <option value="Disetujui / Aktif" ${state.filterLoanStatus === "Disetujui / Aktif" ? "selected" : ""}>Disetujui / Aktif</option>
+                <option value="Selesai / Dikembalikan" ${state.filterLoanStatus === "Selesai / Dikembalikan" ? "selected" : ""}>Selesai / Dikembalikan</option>
+                <option value="Ditolak" ${state.filterLoanStatus === "Ditolak" ? "selected" : ""}>Ditolak</option>
+              </select>
+            </div>
+            <button type="button" id="btn-add-loan" class="btn-3d theme-emerald px-5 py-2.5 text-sm">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Input Peminjaman (Admin)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Daftar Transaksi Peminjaman Admin -->
+        <div class="space-y-4">
+          ${
+            filtered.length === 0
+              ? `<div class="card-3d p-12 text-center text-slate-500">
+                  <p class="font-display font-bold text-lg text-slate-700 mb-1">Belum ada transaksi peminjaman</p>
+                  <p class="text-xs">Tidak ada data yang cocok dengan pencarian atau filter status.</p>
+                </div>`
+              : filtered
+                  .map((loan) => {
+                    const statusStyle =
+                      loan.status === "Disetujui / Aktif"
+                        ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                        : loan.status === "Menunggu Konfirmasi"
+                        ? "bg-amber-100 text-amber-800 border-amber-300"
+                        : loan.status === "Selesai / Dikembalikan"
+                        ? "bg-blue-100 text-blue-800 border-blue-300"
+                        : "bg-rose-100 text-rose-800 border-rose-300";
+
+                    return `
+                      <div class="card-3d card-3d-hover p-5">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                          <div class="space-y-1.5 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                              <span class="px-2.5 py-0.5 rounded-lg bg-slate-900 text-white font-mono text-xs font-bold">${escapeHtml(loan.letterNumber)}</span>
+                              <span class="px-3 py-0.5 rounded-full border text-xs font-extrabold ${statusStyle}">${escapeHtml(loan.status)}</span>
+                              <span class="px-2.5 py-0.5 rounded-lg bg-teal-50 text-teal-700 text-xs font-bold">${escapeHtml(loan.loanType)}</span>
+                            </div>
+
+                            <h3 class="font-display font-extrabold text-lg text-slate-900">
+                              ${escapeHtml(loan.itemName)} <span class="text-emerald-600">(${loan.quantity} Unit)</span>
+                            </h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600 pt-1">
+                              <div><strong>Peminjam:</strong> ${escapeHtml(loan.borrowerName)} (${escapeHtml(loan.borrowerSubject || "Guru")})</div>
+                              <div><strong>Waktu Pakai:</strong> ${formatDateTimeID(loan.startTime)} s/d ${formatDateTimeID(loan.endTime)}</div>
+                              <div class="sm:col-span-2"><strong>Keperluan:</strong> ${escapeHtml(loan.purpose)}</div>
+                            </div>
+                          </div>
+
+                          <!-- Admin Action Buttons -->
+                          <div class="flex flex-wrap items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+                            ${
+                              loan.status === "Menunggu Konfirmasi"
+                                ? `<button type="button" data-approve-loan="${loan.id}" class="btn-3d theme-emerald px-3.5 py-2 text-xs">✓ Setujui</button>
+                                   <button type="button" data-reject-loan="${loan.id}" class="btn-3d theme-rose px-3 py-2 text-xs">✕ Tolak</button>`
+                                : ""
+                            }
+                            ${
+                              loan.status === "Disetujui / Aktif"
+                                ? `<button type="button" data-return-loan="${loan.id}" class="btn-3d theme-blue px-3.5 py-2 text-xs">↺ Tandai Kembali</button>`
+                                : ""
+                            }
+                            <button type="button" data-print-loan="${loan.id}" class="btn-3d theme-amber px-3.5 py-2 text-xs">🖨 Surat</button>
+                            <button type="button" data-edit-loan="${loan.id}" class="btn-3d theme-slate px-3 py-2 text-xs">Edit</button>
+                            <button type="button" data-del-loan="${loan.id}" class="btn-3d theme-rose px-3 py-2 text-xs">Hapus</button>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  })
+                  .join("")
+          }
+        </div>
+      `;
+    }
+
+    function openLoanFormModal(editLoan = null) {
+      const isEdit = Boolean(editLoan);
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const toLocalInput = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      const defaultStart = toLocalInput(now);
+      const defaultEnd = toLocalInput(new Date(now.getTime() + 2 * 3600000));
+      const romanMonths = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+      const autoLetter = `${String(state.loans.length + 1).padStart(3, "0")}/SARPRAS/${romanMonths[now.getMonth()]}/${now.getFullYear()}`;
+
+      openModal(`
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl theme-emerald flex items-center justify-center text-white font-extrabold">+</div>
+            <div>
+              <h3 class="font-display font-extrabold text-xl text-slate-900">${isEdit ? "Edit Data Peminjaman" : "Input Peminjaman (Admin)"}</h3>
+              <p class="text-xs text-slate-500">Catat peminjaman ruangan atau barang oleh guru & tentukan statusnya.</p>
+            </div>
+          </div>
+          <button type="button" id="close-loan-modal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        </div>
+
+        <form id="form-loan" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nomor Surat Permohonan</label>
+              <input name="letterNumber" type="text" required value="${escapeHtml(editLoan ? editLoan.letterNumber : autoLetter)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-mono font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Status Peminjaman</label>
+              <select name="status" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-bold bg-white">
+                ${["Menunggu Konfirmasi", "Disetujui / Aktif", "Selesai / Dikembalikan", "Ditolak"]
+                  .map((st) => `<option value="${st}" ${editLoan && editLoan.status === st ? "selected" : ""}>${st}</option>`)
+                  .join("")}
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Guru / Peminjam</label>
+              <input name="borrowerName" type="text" required value="${escapeHtml(editLoan ? editLoan.borrowerName : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">NIP / Identitas</label>
+              <input name="borrowerNip" type="text" value="${escapeHtml(editLoan ? editLoan.borrowerNip || "" : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-mono" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Mata Pelajaran / Jabatan</label>
+              <input name="borrowerSubject" type="text" value="${escapeHtml(editLoan ? editLoan.borrowerSubject || "" : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nomor WhatsApp</label>
+              <input name="borrowerPhone" type="text" value="${escapeHtml(editLoan ? editLoan.borrowerPhone || "" : "")}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jenis Peminjaman</label>
+              <select name="loanType" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold bg-white">
+                ${["Barang Inventaris", "Ruangan / Fasilitas", "Ruangan & Barang"]
+                  .map((t) => `<option value="${t}" ${editLoan && editLoan.loanType === t ? "selected" : ""}>${t}</option>`)
+                  .join("")}
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Pilih Aset / Ruangan</label>
+              <select name="itemId" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold bg-white">
+                ${state.inventory
+                  .map(
+                    (item) =>
+                      `<option value="${item.id}" ${editLoan && editLoan.itemId === item.id ? "selected" : ""}>${escapeHtml(item.name)} (Tersedia: ${item.availableQty})</option>`
+                  )
+                  .join("")}
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Jumlah Unit</label>
+              <input name="quantity" type="number" min="1" required value="${editLoan ? editLoan.quantity : 1}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-bold" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Waktu Mulai</label>
+              <input name="startTime" type="datetime-local" required value="${escapeHtml(editLoan ? editLoan.startTime : defaultStart)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Waktu Selesai</label>
+              <input name="endTime" type="datetime-local" required value="${escapeHtml(editLoan ? editLoan.endTime : defaultEnd)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm font-semibold" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Keperluan / Kegiatan</label>
+            <textarea name="purpose" rows="2" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none text-sm">${escapeHtml(editLoan ? editLoan.purpose : "")}</textarea>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-3 border-t border-slate-200">
+            <button type="button" id="cancel-loan-modal" class="btn-3d theme-slate px-5 py-2.5 text-sm">Batal</button>
+            <button type="submit" class="btn-3d theme-emerald px-6 py-2.5 text-sm">${isEdit ? "Simpan Perubahan" : "Simpan Peminjaman"}</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById("close-loan-modal").onclick = closeModal;
+      document.getElementById("cancel-loan-modal").onclick = closeModal;
+      document.getElementById("form-loan").onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd.entries());
+        closeModal();
+        await saveLoan(data, editLoan ? editLoan.id : null);
+      };
+    }
+
+    function bindPeminjamanEvents() {
+      const btnBorrowerMode = document.getElementById("btn-mode-borrower");
+      if (btnBorrowerMode) {
+        btnBorrowerMode.onclick = () => {
+          state.loanViewMode = "borrower";
+          renderCurrentView();
+        };
+      }
+
+      const btnAdminMode = document.getElementById("btn-mode-admin");
+      if (btnAdminMode) {
+        btnAdminMode.onclick = () => {
+          requireAdminAction(() => {
+            state.loanViewMode = "admin";
+            renderCurrentView();
+          });
+        };
+      }
+
+      const borrowerForm = document.getElementById("form-borrower-submit");
+      if (borrowerForm) {
+        borrowerForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const fd = new FormData(e.target);
+          const data = Object.fromEntries(fd.entries());
+          state.preselectedBorrowerItemId = "";
+          await saveLoan(data, null);
+          showToast(
+            "Pengajuan Terkirim",
+            "Silakan cetak surat konfirmasi Anda agar dapat segera ditindaklanjuti oleh Admin Sarpras.",
+            "success"
+          );
+        };
+      }
+
+      const searchEl = document.getElementById("loan-search-input");
+      if (searchEl) {
+        searchEl.oninput = (e) => {
+          state.searchLoan = e.target.value;
+          renderCurrentView();
+        };
+      }
+      const statusEl = document.getElementById("loan-filter-status");
+      if (statusEl) {
+        statusEl.onchange = (e) => {
+          state.filterLoanStatus = e.target.value;
+          renderCurrentView();
+        };
+      }
+      const btnAdd = document.getElementById("btn-add-loan");
+      if (btnAdd) btnAdd.onclick = () => openLoanFormModal(null);
+
+      document.querySelectorAll("[data-approve-loan]").forEach((btn) => {
+        btn.onclick = () => quickUpdateLoanStatus(btn.getAttribute("data-approve-loan"), "Disetujui / Aktif");
+      });
+
+      document.querySelectorAll("[data-reject-loan]").forEach((btn) => {
+        btn.onclick = () => quickUpdateLoanStatus(btn.getAttribute("data-reject-loan"), "Ditolak");
+      });
+
+      document.querySelectorAll("[data-return-loan]").forEach((btn) => {
+        btn.onclick = () => quickUpdateLoanStatus(btn.getAttribute("data-return-loan"), "Selesai / Dikembalikan");
+      });
+
+      document.querySelectorAll("[data-print-loan]").forEach((btn) => {
+        btn.onclick = () => {
+          state.selectedLetterLoanId = btn.getAttribute("data-print-loan");
+          setActiveMenu("surat");
+        };
+      });
+
+      document.querySelectorAll("[data-edit-loan]").forEach((btn) => {
+        btn.onclick = () => {
+          const loan = state.loans.find((l) => l.id === btn.getAttribute("data-edit-loan"));
+          if (loan) openLoanFormModal(loan);
+        };
+      });
+
+      document.querySelectorAll("[data-del-loan]").forEach((btn) => {
+        btn.onclick = () => {
+          const loan = state.loans.find((l) => l.id === btn.getAttribute("data-del-loan"));
+          if (loan) {
+            showConfirmModal(
+              "Hapus Data Peminjaman?",
+              `Anda yakin ingin menghapus transaksi surat "${loan.letterNumber}" atas nama ${loan.borrowerName}?`,
+              () => deleteLoan(loan)
+            );
+          }
+        };
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 3: CETAK SURAT PEMINJAMAN SARPRAS (FORMAT RESMI A4)
+    // -------------------------------------------------------------------------
+    function renderSuratView() {
+      const activeLoan =
+        state.loans.find((l) => l.id === state.selectedLetterLoanId) || state.loans[0] || null;
+
+      return `
+        <!-- Toolbar Pilih & Cetak Surat -->
+        <div class="no-print card-3d p-5 mb-6">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="flex-1">
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-amber-700 mb-1.5">Pilih Nomor Surat / Peminjam</label>
+              <select id="select-letter-loan" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-amber-500 focus:outline-none text-sm font-bold bg-white">
+                ${
+                  state.loans.length === 0
+                    ? `<option value="">-- Belum ada data peminjaman --</option>`
+                    : state.loans
+                        .map(
+                          (l) =>
+                            `<option value="${l.id}" ${activeLoan && activeLoan.id === l.id ? "selected" : ""}>${escapeHtml(l.letterNumber)} — ${escapeHtml(l.borrowerName)} (${escapeHtml(l.itemName)}) [${escapeHtml(l.status)}]</option>`
+                        )
+                        .join("")
+                }
+              </select>
+            </div>
+
+            ${
+              activeLoan
+                ? `<div class="flex flex-wrap items-center gap-2.5">
+                    ${
+                      activeLoan.status === "Menunggu Konfirmasi"
+                        ? state.isAdminLoggedIn
+                          ? `<button type="button" id="btn-letter-approve" class="btn-3d theme-emerald px-4 py-2.5 text-xs sm:text-sm">✓ Validasi & Setujui Admin</button>`
+                          : `<button type="button" id="btn-letter-login-approve" class="btn-3d theme-indigo px-4 py-2.5 text-xs sm:text-sm">🔐 Login Admin untuk Validasi</button>`
+                        : ""
+                    }
+                    <button type="button" id="btn-copy-wa" class="btn-3d theme-slate px-4 py-2.5 text-xs sm:text-sm">📋 Salin Teks WA</button>
+                    <button type="button" id="btn-print-now" class="btn-3d theme-amber px-5 py-2.5 text-xs sm:text-sm">🖨 Cetak Surat (PDF / A4)</button>
+                  </div>`
+                : ""
+            }
+          </div>
+        </div>
+
+        <!-- Lembar Pratinjau Surat Resmi A4 -->
+        ${
+          !activeLoan
+            ? `<div class="card-3d p-12 text-center text-slate-500">
+                <p class="font-display font-bold text-lg text-slate-700 mb-1">Belum ada surat peminjaman yang tersedia</p>
+                <p class="text-xs">Silakan ajukan peminjaman terlebih dahulu pada Menu 02 Peminjaman Ruang & Barang.</p>
+              </div>`
+            : `<div id="print-area-wrapper" class="card-3d p-4 sm:p-8 bg-slate-200/70">
+                <div id="printable-letter" class="bg-white max-w-[820px] mx-auto p-8 sm:p-12 shadow-xl border border-slate-300 text-slate-900 leading-relaxed">
+                  <!-- Kop Surat Resmi -->
+                  <div class="border-b-4 border-double border-slate-900 pb-4 mb-6 text-center">
+                    <div class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">${escapeHtml(state.settings.agencyName)}</div>
+                    <h2 class="font-display font-extrabold text-xl sm:text-2xl uppercase tracking-wide text-slate-950 mt-0.5">${escapeHtml(state.settings.schoolName)}</h2>
+                    <p class="text-xs text-slate-600 mt-1">${escapeHtml(state.settings.address)}</p>
+                    <p class="text-xs text-slate-600">Email: ${escapeHtml(state.settings.email)}</p>
+                  </div>
+
+                  <!-- Nomor & Perihal Surat -->
+                  <div class="flex flex-col sm:flex-row justify-between gap-4 text-sm mb-6">
+                    <table class="text-sm">
+                      <tr><td class="pr-3 font-semibold">Nomor</td><td>: <strong>${escapeHtml(activeLoan.letterNumber)}</strong></td></tr>
+                      <tr><td class="pr-3 font-semibold">Lampiran</td><td>: 1 (Satu) Berkas</td></tr>
+                      <tr><td class="pr-3 font-semibold">Perihal</td><td>: <strong>Permohonan & Konfirmasi Peminjaman Sarpras</strong></td></tr>
+                    </table>
+                    <div class="text-sm sm:text-right">
+                      <div>Diterbitkan pada:</div>
+                      <div class="font-semibold">${formatDateFullID(activeLoan.createdAt)}</div>
+                    </div>
+                  </div>
+
+                  <!-- Tujuan Surat -->
+                  <div class="text-sm mb-5">
+                    <p>Kepada Yth.</p>
+                    <p class="font-bold">Waka / Admin Sarana dan Prasarana (SARPRAS)</p>
+                    <p>${escapeHtml(state.settings.schoolName)}</p>
+                    <p>Di Tempat</p>
+                  </div>
+
+                  <p class="text-sm mb-4">Dengan hormat,</p>
+                  <p class="text-sm mb-4 text-justify">
+                    Sehubungan dengan pelaksanaan kegiatan pembelajaran dan operasional sekolah, bersama surat ini kami mengajukan permohonan peminjaman fasilitas/barang inventaris kepada Bagian Sarana & Prasarana agar dapat ditindaklanjuti dengan rincian sebagai berikut:
+                  </p>
+
+                  <!-- Tabel Rincian Peminjaman -->
+                  <table class="w-full border-collapse border border-slate-800 text-sm mb-5">
+                    <tbody>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold w-1/3">Nama Peminjam / Guru</td>
+                        <td class="border border-slate-800 px-3.5 py-2 font-semibold">${escapeHtml(activeLoan.borrowerName)}</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">NIP / Jabatan</td>
+                        <td class="border border-slate-800 px-3.5 py-2">${escapeHtml(activeLoan.borrowerNip || "-")} • ${escapeHtml(activeLoan.borrowerSubject || "-")}</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Kontak WhatsApp</td>
+                        <td class="border border-slate-800 px-3.5 py-2">${escapeHtml(activeLoan.borrowerPhone || "-")}</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Jenis & Nama Aset</td>
+                        <td class="border border-slate-800 px-3.5 py-2 font-bold">${escapeHtml(activeLoan.itemName)} (${escapeHtml(activeLoan.loanType)})</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Jumlah Dipinjam</td>
+                        <td class="border border-slate-800 px-3.5 py-2 font-bold">${activeLoan.quantity} Unit</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Waktu Pemakaian</td>
+                        <td class="border border-slate-800 px-3.5 py-2">${formatDateTimeID(activeLoan.startTime)} s/d ${formatDateTimeID(activeLoan.endTime)}</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Keperluan Kegiatan</td>
+                        <td class="border border-slate-800 px-3.5 py-2">${escapeHtml(activeLoan.purpose)}</td>
+                      </tr>
+                      <tr>
+                        <td class="border border-slate-800 px-3.5 py-2 bg-slate-100 font-bold">Status Verifikasi Admin</td>
+                        <td class="border border-slate-800 px-3.5 py-2 font-extrabold uppercase">${escapeHtml(activeLoan.status)}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p class="text-sm mb-8 text-justify">
+                    Peminjam bertanggung jawab penuh menjaga kebersihan, keamanan, serta kelengkapan fasilitas/barang selama masa peminjaman dan mengembalikannya tepat waktu sesuai jadwal di atas. Demikian surat konfirmasi ini dibuat untuk dipergunakan sebagaimana mestinya.
+                  </p>
+
+                  <!-- Kolom Tanda Tangan -->
+                  <div class="grid grid-cols-2 gap-8 text-sm pt-2">
+                    <div class="text-center">
+                      <p>Mengetahui & Menyetujui,</p>
+                      <p class="font-bold">Waka / Admin Sarpras</p>
+                      <div class="h-20 flex items-center justify-center">
+                        ${
+                          activeLoan.status === "Disetujui / Aktif" || activeLoan.status === "Selesai / Dikembalikan"
+                            ? `<span class="px-3 py-1 border-2 border-emerald-700 text-emerald-800 font-mono text-xs font-extrabold rounded uppercase rotate-[-4deg]">TERVERIFIKASI SISTEM SARPRAS</span>`
+                            : `<span class="text-xs text-slate-400 italic">(Menunggu Paraf Admin)</span>`
+                        }
+                      </div>
+                      <p class="font-bold underline">${escapeHtml(state.settings.sarprasHeadName)}</p>
+                      <p class="text-xs">NIP. ${escapeHtml(state.settings.sarprasHeadNip)}</p>
+                    </div>
+
+                    <div class="text-center">
+                      <p>Pemohon / Guru Peminjam,</p>
+                      <p class="font-bold">${escapeHtml(activeLoan.borrowerSubject || "Guru Pengajar")}</p>
+                      <div class="h-20"></div>
+                      <p class="font-bold underline">${escapeHtml(activeLoan.borrowerName)}</p>
+                      <p class="text-xs">NIP. ${escapeHtml(activeLoan.borrowerNip || "-")}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>`
+        }
+      `;
+    }
+
+    function bindSuratEvents() {
+      const sel = document.getElementById("select-letter-loan");
+      if (sel) {
+        sel.onchange = (e) => {
+          state.selectedLetterLoanId = e.target.value;
+          renderCurrentView();
+        };
+      }
+
+      const activeLoan = state.loans.find((l) => l.id === state.selectedLetterLoanId) || state.loans[0];
+      const btnApprove = document.getElementById("btn-letter-approve");
+      if (btnApprove && activeLoan) {
+        btnApprove.onclick = () => quickUpdateLoanStatus(activeLoan.id, "Disetujui / Aktif");
+      }
+
+      const btnLoginApprove = document.getElementById("btn-letter-login-approve");
+      if (btnLoginApprove && activeLoan) {
+        btnLoginApprove.onclick = () =>
+          openAdminLoginModal(() => quickUpdateLoanStatus(activeLoan.id, "Disetujui / Aktif"));
+      }
+
+      const btnCopyWa = document.getElementById("btn-copy-wa");
+      if (btnCopyWa && activeLoan) {
+        btnCopyWa.onclick = () => {
+          const waText =
+            `*KONFIRMASI PEMINJAMAN SARPRAS*\n` +
+            `Instansi: ${state.settings.schoolName}\n` +
+            `No. Surat: ${activeLoan.letterNumber}\n` +
+            `Peminjam: ${activeLoan.borrowerName}\n` +
+            `Aset/Ruang: ${activeLoan.itemName} (${activeLoan.quantity} Unit)\n` +
+            `Waktu: ${formatDateTimeID(activeLoan.startTime)} s/d ${formatDateTimeID(activeLoan.endTime)}\n` +
+            `Keperluan: ${activeLoan.purpose}\n` +
+            `Status: ${activeLoan.status}\n` +
+            `Mohon tindak lanjut Admin Sarpras. Terima kasih.`;
+
+          const ta = document.createElement("textarea");
+          ta.value = waText;
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            showToast("Teks WA Disalin", "Format konfirmasi siap ditempel ke WhatsApp Admin Sarpras.");
+          } catch (e) {
+            showToast("Gagal Menyalin", "Silakan salin manual dari halaman surat.", "error");
+          }
+          document.body.removeChild(ta);
+        };
+      }
+
+      const btnPrint = document.getElementById("btn-print-now");
+      if (btnPrint) {
+        btnPrint.onclick = () => window.print();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 4: DASBOR REALTIME PEMAKAIAN GURU (LIVE COUNTDOWN TIMER)
+    // -------------------------------------------------------------------------
+    function renderRealtimeView() {
+      const activeSessions = state.loans.filter((l) => l.status === "Disetujui / Aktif");
+      const upcomingSessions = state.loans.filter((l) => l.status === "Menunggu Konfirmasi");
+
+      return `
+        <!-- Banner Realtime Live Monitor -->
+        <div class="card-3d p-6 mb-6 bg-gradient-to-r from-purple-700 via-fuchsia-600 to-pink-600 text-white border-none">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold uppercase tracking-wider mb-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-300 animate-ping"></span>
+                LIVE MONITORING REALTIME
+              </div>
+              <h3 class="font-display font-extrabold text-2xl sm:text-3xl">Pemantauan Pemakaian Ruangan & Barang Guru</h3>
+              <p class="text-xs sm:text-sm text-purple-100 mt-1">Timer hitung mundur berjalan otomatis setiap detik untuk memastikan ketepatan jadwal pengembalian.</p>
+            </div>
+
+            <div class="flex gap-3">
+              <div class="px-5 py-3 rounded-2xl bg-white/15 backdrop-blur-xs text-center">
+                <div class="font-display font-extrabold text-3xl">${activeSessions.length}</div>
+                <div class="text-[11px] font-bold uppercase text-purple-100">Sesi Aktif</div>
+              </div>
+              <div class="px-5 py-3 rounded-2xl bg-white/15 backdrop-blur-xs text-center">
+                <div class="font-display font-extrabold text-3xl">${upcomingSessions.length}</div>
+                <div class="text-[11px] font-bold uppercase text-purple-100">Antrean</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daftar Kartu Sesi Berjalan (Live Countdown) -->
+        <h4 class="font-display font-extrabold text-lg text-slate-800 mb-3">Sesi Pemakaian Sedang Berlangsung</h4>
+        ${
+          activeSessions.length === 0
+            ? `<div class="card-3d p-10 text-center text-slate-500 mb-8">
+                <p class="font-display font-bold text-base text-slate-700 mb-1">Tidak ada ruangan atau barang yang sedang dipakai saat ini</p>
+                <p class="text-xs">Semua aset dalam keadaan siap pakai atau menunggu persetujuan admin.</p>
+              </div>`
+            : `<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+                ${activeSessions
+                  .map((session) => {
+                    return `
+                      <div class="card-3d card-3d-hover p-6 border-b-purple-500" data-realtime-card="${session.id}" data-start="${escapeHtml(session.startTime)}" data-end="${escapeHtml(session.endTime)}">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-mono text-xs font-bold">${escapeHtml(session.letterNumber)}</span>
+                            <h5 class="font-display font-extrabold text-lg text-slate-900 mt-1.5">${escapeHtml(session.itemName)} (${session.quantity} Unit)</h5>
+                            <p class="text-xs font-semibold text-slate-600">👩‍🏫 ${escapeHtml(session.borrowerName)} • ${escapeHtml(session.borrowerSubject || "Guru")}</p>
+                          </div>
+                          <span class="rt-badge px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">AKTIF</span>
+                        </div>
+
+                        <p class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 mb-4">
+                          <strong>Kegiatan:</strong> ${escapeHtml(session.purpose)}
+                        </p>
+
+                        <!-- Live Countdown Box -->
+                        <div class="p-4 rounded-2xl bg-slate-900 text-white mb-4">
+                          <div class="flex items-center justify-between text-xs text-slate-300 mb-1">
+                            <span>Sisa Waktu Pemakaian</span>
+                            <span>Selesai: ${formatDateTimeID(session.endTime)}</span>
+                          </div>
+                          <div class="rt-countdown font-display font-extrabold text-2xl sm:text-3xl text-fuchsia-300 tracking-wider">
+                            Menghitung...
+                          </div>
+                          <div class="w-full h-2.5 bg-slate-700 rounded-full overflow-hidden mt-3">
+                            <div class="rt-progress h-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-pink-500 transition-all duration-500" style="width: 50%"></div>
+                          </div>
+                        </div>
+
+                        <div class="flex justify-end gap-2">
+                          <button type="button" data-rt-print="${session.id}" class="btn-3d theme-amber px-3.5 py-2 text-xs">🖨 Lihat Surat</button>
+                          <button type="button" data-rt-finish="${session.id}" class="btn-3d theme-emerald px-4 py-2 text-xs">✓ Selesaikan & Kembalikan</button>
+                        </div>
+                      </div>
+                    `;
+                  })
+                  .join("")}
+              </div>`
+        }
+
+        <!-- Antrean Peminjaman Berikutnya -->
+        <h4 class="font-display font-extrabold text-lg text-slate-800 mb-3">Antrean Jadwal Menunggu Konfirmasi</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          ${
+            upcomingSessions.length === 0
+              ? `<div class="card-3d p-6 text-xs text-slate-500 md:col-span-2 xl:col-span-3">Tidak ada antrean peminjaman baru.</div>`
+              : upcomingSessions
+                  .map(
+                    (up) => `
+                    <div class="card-3d p-4 border-b-amber-400">
+                      <div class="flex justify-between items-center mb-1.5">
+                        <span class="font-mono text-xs font-bold text-amber-700">${escapeHtml(up.letterNumber)}</span>
+                        <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">Menunggu</span>
+                      </div>
+                      <div class="font-display font-bold text-sm text-slate-900">${escapeHtml(up.itemName)} (${up.quantity} Unit)</div>
+                      <div class="text-xs text-slate-600 mt-0.5">${escapeHtml(up.borrowerName)}</div>
+                      <div class="text-[11px] text-slate-500 mt-1">Mulai: ${formatDateTimeID(up.startTime)}</div>
+                      <div class="mt-3 flex justify-end">
+                        <button type="button" data-rt-start="${up.id}" class="btn-3d theme-purple px-3 py-1.5 text-xs">▶ Setujui & Mulai Sesi</button>
+                      </div>
+                    </div>
+                  `
+                  )
+                  .join("")
+          }
+        </div>
+      `;
+    }
+
+    function bindRealtimeEvents() {
+      document.querySelectorAll("[data-rt-finish]").forEach((btn) => {
+        btn.onclick = () =>
+          requireAdminAction(() => quickUpdateLoanStatus(btn.getAttribute("data-rt-finish"), "Selesai / Dikembalikan"));
+      });
+      document.querySelectorAll("[data-rt-start]").forEach((btn) => {
+        btn.onclick = () =>
+          requireAdminAction(() => quickUpdateLoanStatus(btn.getAttribute("data-rt-start"), "Disetujui / Aktif"));
+      });
+      document.querySelectorAll("[data-rt-print]").forEach((btn) => {
+        btn.onclick = () => {
+          state.selectedLetterLoanId = btn.getAttribute("data-rt-print");
+          setActiveMenu("surat");
+        };
+      });
+      tickClockAndCountdowns();
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 5: GALERI DATA INVENTARIS (KATALOG VISUAL 3D)
+    // -------------------------------------------------------------------------
+    function renderGaleriView() {
+      const filtered = state.inventory.filter((item) => {
+        const matchCat = state.filterGalleryCategory === "Semua" || item.category === state.filterGalleryCategory;
+        const matchAvail =
+          state.filterGalleryAvailability === "Semua" ||
+          (state.filterGalleryAvailability === "Tersedia" && item.availableQty > 0) ||
+          (state.filterGalleryAvailability === "Habis" && item.availableQty === 0);
+        return matchCat && matchAvail;
+      });
+
+      return `
+        <!-- Filter Bar Galeri -->
+        <div class="card-3d p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex flex-wrap gap-2">
+            ${["Semua", "Elektronik & IT", "Ruangan & Aula", "Alat Laboratorium", "Furnitur", "Olahraga & Seni"]
+              .map(
+                (cat) => `
+                <button type="button" data-gal-cat="${cat}" class="btn-3d px-3.5 py-2 text-xs ${
+                  state.filterGalleryCategory === cat ? "theme-rose" : "theme-slate"
+                }">${cat}</button>
+              `
+              )
+              .join("")}
+          </div>
+
+          <select id="gal-avail-filter" class="px-4 py-2 rounded-xl border-2 border-slate-200 focus:border-rose-500 focus:outline-none text-xs font-bold bg-white">
+            <option value="Semua" ${state.filterGalleryAvailability === "Semua" ? "selected" : ""}>Semua Status Stok</option>
+            <option value="Tersedia" ${state.filterGalleryAvailability === "Tersedia" ? "selected" : ""}>Hanya Tersedia</option>
+            <option value="Habis" ${state.filterGalleryAvailability === "Habis" ? "selected" : ""}>Sedang Dipakai / Habis</option>
+          </select>
+        </div>
+
+        <!-- Grid Kartu Visual 3D -->
+        ${
+          filtered.length === 0
+            ? `<div class="card-3d p-12 text-center text-slate-500">
+                <p class="font-display font-bold text-lg text-slate-700 mb-1">Tidak ada aset pada filter galeri ini</p>
+                <p class="text-xs">Ubah pilihan kategori atau tambahkan inventaris baru pada Menu 01.</p>
+              </div>`
+            : `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                ${filtered
+                  .map((item) => {
+                    const illus = getCategoryIllustrationSVG(item.category, "w-20 h-20");
+                    const hasPhoto = item.imageUrl && item.imageUrl.trim().length > 4;
+
+                    return `
+                      <div class="card-3d card-3d-hover overflow-hidden flex flex-col justify-between">
+                        <div>
+                          <!-- Area Visual Foto atau Ilustrasi 3D -->
+                          <div class="relative h-44 bg-gradient-to-br ${illus.bg} flex items-center justify-center overflow-hidden">
+                            ${
+                              hasPhoto
+                                ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                   <div style="display:none" class="w-full h-full items-center justify-center">${illus.svg}</div>`
+                                : illus.svg
+                            }
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-xl bg-slate-900/75 text-white font-mono text-[11px] font-bold backdrop-blur-xs">
+                              ${escapeHtml(item.code)}
+                            </span>
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-extrabold shadow-sm ${
+                              item.availableQty > 0 ? "bg-emerald-500 text-white" : "bg-rose-600 text-white"
+                            }">
+                              ${item.availableQty > 0 ? `${item.availableQty} Tersedia` : "Dipakai Penuh"}
+                            </span>
+                          </div>
+
+                          <!-- Informasi Aset -->
+                          <div class="p-5">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600">${escapeHtml(item.category)}</span>
+                            <h4 class="font-display font-extrabold text-base text-slate-900 mt-0.5 line-clamp-2">${escapeHtml(item.name)}</h4>
+                            <p class="text-xs text-slate-500 mt-1.5 line-clamp-2">${escapeHtml(item.description || "Fasilitas inventaris sekolah terawat.")}</p>
+                            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                              <span>📍 ${escapeHtml(item.location)}</span>
+                              <span class="font-bold">${escapeHtml(item.condition)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="px-5 pb-5 flex flex-wrap gap-2">
+                          <button type="button" data-gal-detail="${item.id}" class="btn-3d theme-slate flex-1 py-2 text-xs">Detail</button>
+                          <button type="button" data-gal-card="${item.id}" class="btn-3d theme-amber px-3 py-2 text-xs" title="Cetak Kartu Inventaris">🪪 Kartu</button>
+                          <button type="button" data-gal-borrow="${item.id}" class="btn-3d theme-rose flex-1 py-2 text-xs" ${item.availableQty === 0 ? "disabled style='opacity:0.5;cursor:not-allowed'" : ""}>
+                            Pinjam
+                          </button>
+                        </div>
+                      </div>
+                    `;
+                  })
+                  .join("")}
+              </div>`
+        }
+      `;
+    }
+
+    function openGalleryDetailModal(item) {
+      const illus = getCategoryIllustrationSVG(item.category, "w-24 h-24");
+      const hasPhoto = item.imageUrl && item.imageUrl.trim().length > 4;
+
+      openModal(`
+        <div class="flex items-center justify-between mb-4">
+          <span class="px-3 py-1 rounded-xl bg-rose-100 text-rose-700 font-mono text-xs font-bold">${escapeHtml(item.code)}</span>
+          <button type="button" id="close-gal-modal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+        </div>
+        <div class="h-52 rounded-2xl bg-gradient-to-br ${illus.bg} flex items-center justify-center overflow-hidden mb-5">
+          ${
+            hasPhoto
+              ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.name)}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                 <div style="display:none" class="w-full h-full items-center justify-center">${illus.svg}</div>`
+              : illus.svg
+          }
+        </div>
+        <h3 class="font-display font-extrabold text-2xl text-slate-900">${escapeHtml(item.name)}</h3>
+        <p class="text-xs font-bold text-rose-600 uppercase mt-1">${escapeHtml(item.category)} • 📍 ${escapeHtml(item.location)}</p>
+        <p class="text-sm text-slate-600 mt-3 leading-relaxed">${escapeHtml(item.description || "-")}</p>
+        <div class="grid grid-cols-3 gap-3 my-5 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+          <div>
+            <div class="text-xs text-slate-400 font-bold">Total Unit</div>
+            <div class="font-display font-extrabold text-lg text-slate-900">${item.totalQty}</div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-bold">Tersedia</div>
+            <div class="font-display font-extrabold text-lg text-emerald-600">${item.availableQty}</div>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-bold">Kondisi</div>
+            <div class="font-display font-extrabold text-sm text-slate-800 mt-1">${escapeHtml(item.condition)}</div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-3">
+          <button type="button" id="btn-gal-modal-card" class="btn-3d theme-amber px-4 py-2.5 text-sm">🪪 Cetak Kartu</button>
+          <button type="button" id="close-gal-modal-2" class="btn-3d theme-slate px-5 py-2.5 text-sm">Tutup</button>
+        </div>
+      `);
+
+      document.getElementById("close-gal-modal").onclick = closeModal;
+      document.getElementById("close-gal-modal-2").onclick = closeModal;
+      document.getElementById("btn-gal-modal-card").onclick = () => {
+        closeModal();
+        openInventoryCardPrintModal([item]);
+      };
+    }
+
+    function bindGaleriEvents() {
+      document.querySelectorAll("[data-gal-cat]").forEach((btn) => {
+        btn.onclick = () => {
+          state.filterGalleryCategory = btn.getAttribute("data-gal-cat");
+          renderCurrentView();
+        };
+      });
+      const availSel = document.getElementById("gal-avail-filter");
+      if (availSel) {
+        availSel.onchange = (e) => {
+          state.filterGalleryAvailability = e.target.value;
+          renderCurrentView();
+        };
+      }
+      document.querySelectorAll("[data-gal-detail]").forEach((btn) => {
+        btn.onclick = () => {
+          const item = state.inventory.find((i) => i.id === btn.getAttribute("data-gal-detail"));
+          if (item) openGalleryDetailModal(item);
+        };
+      });
+      document.querySelectorAll("[data-gal-card]").forEach((btn) => {
+        btn.onclick = () => {
+          const item = state.inventory.find((i) => i.id === btn.getAttribute("data-gal-card"));
+          if (item) openInventoryCardPrintModal([item]);
+        };
+      });
+      document.querySelectorAll("[data-gal-borrow]").forEach((btn) => {
+        btn.onclick = () => {
+          const itemId = btn.getAttribute("data-gal-borrow");
+          state.preselectedBorrowerItemId = itemId;
+          state.loanViewMode = "borrower";
+          setActiveMenu("peminjaman");
+          showToast("Formulir Peminjaman Siap", "Silakan lengkapi identitas peminjam di bawah ini.", "info");
+        };
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // MENU 6: SETTING SISTEM, KOP SURAT, AKUN ADMIN & KONFIGURASI FIREBASE
+    // -------------------------------------------------------------------------
+    function renderSettingView() {
+      if (!state.isAdminLoggedIn) {
+        return `
+          <div class="card-3d p-10 sm:p-14 text-center max-w-xl mx-auto">
+            <div class="w-16 h-16 rounded-2xl theme-indigo flex items-center justify-center text-white text-2xl mx-auto mb-4">🔐</div>
+            <h3 class="font-display font-extrabold text-2xl text-slate-900 mb-2">Halaman Khusus Admin Sarpras</h3>
+            <p class="text-sm text-slate-600 mb-6 leading-relaxed">
+              Menu pengaturan kop surat instansi, pejabat penandatangan, serta kredensial akun pengelola dilindungi oleh autentikasi Admin.
+            </p>
+            <button type="button" id="btn-setting-login-trigger" class="btn-3d theme-indigo px-6 py-3 text-sm">
+              🔐 Login Admin Sekarang
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Form Identitas Instansi, Kop Surat & Akun Admin -->
+          <div class="lg:col-span-2 card-3d p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-11 h-11 rounded-2xl theme-indigo flex items-center justify-center text-white font-extrabold">⚙</div>
+              <div>
+                <h3 class="font-display font-extrabold text-xl text-slate-900">Pengaturan Identitas, Kop Surat & Akun Admin</h3>
+                <p class="text-xs text-slate-500">Perubahan otomatis diterapkan pada header, kartu inventaris, dan surat resmi Sarpras.</p>
+              </div>
+            </div>
+
+            <form id="form-settings" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Instansi / Sekolah</label>
+                  <input name="schoolName" type="text" required value="${escapeHtml(state.settings.schoolName)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-bold" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Dinas / Yayasan (Kop Atas)</label>
+                  <input name="agencyName" type="text" required value="${escapeHtml(state.settings.agencyName)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-semibold" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Alamat Lengkap & Telepon</label>
+                <input name="address" type="text" required value="${escapeHtml(state.settings.address)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm" />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Email Sarpras</label>
+                  <input name="email" type="email" required value="${escapeHtml(state.settings.email)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nama Waka / Admin Sarpras</label>
+                  <input name="sarprasHeadName" type="text" required value="${escapeHtml(state.settings.sarprasHeadName)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-bold" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-slate-600 mb-1">NIP Pejabat Sarpras</label>
+                  <input name="sarprasHeadNip" type="text" required value="${escapeHtml(state.settings.sarprasHeadNip)}" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-mono" />
+                </div>
+              </div>
+
+              <!-- Pengaturan Login Admin -->
+              <div class="p-4 rounded-2xl bg-indigo-50/70 border-2 border-indigo-200 mt-4">
+                <h4 class="font-display font-extrabold text-sm text-indigo-900 mb-3">🔐 Kredensial Login Admin Sarpras</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase text-indigo-800 mb-1">Username Admin</label>
+                    <input name="adminUsername" type="text" required value="${escapeHtml(state.settings.adminUsername)}" class="w-full px-3.5 py-2 rounded-xl border-2 border-indigo-200 bg-white focus:border-indigo-500 focus:outline-none text-sm font-bold" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold uppercase text-indigo-800 mb-1">Password / PIN Admin</label>
+                    <input name="adminPassword" type="text" required value="${escapeHtml(state.settings.adminPassword)}" class="w-full px-3.5 py-2 rounded-xl border-2 border-indigo-200 bg-white focus:border-indigo-500 focus:outline-none text-sm font-mono font-bold" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 flex justify-end">
+                <button type="submit" class="btn-3d theme-indigo px-6 py-3 text-sm">💾 Simpan Semua Pengaturan</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Panel Status Backend & Tools Database -->
+          <div class="space-y-6">
+            <div class="card-3d p-6">
+              <h4 class="font-display font-extrabold text-base text-slate-900 mb-3">Status Backend Firebase</h4>
+              <div class="p-3.5 rounded-2xl ${state.isDemoMode ? "bg-amber-50 border border-amber-200 text-amber-800" : "bg-emerald-50 border border-emerald-200 text-emerald-800"} text-xs space-y-1.5 mb-4">
+                <div class="font-extrabold uppercase">${state.isDemoMode ? "● Mode Simulasi Lokal" : "● Terhubung ke Firebase Cloud"}</div>
+                <p>App ID: <code class="font-mono font-bold">${escapeHtml(appId)}</code></p>
+                <p>Koleksi: <code class="font-mono">/artifacts/${escapeHtml(appId)}/public/data/*</code></p>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Saat mengunggah file <code class="font-mono bg-slate-100 px-1.5 py-0.5 rounded">index.html</code> ini ke GitHub & Vercel, ganti objek <code class="font-mono bg-slate-100 px-1.5 py-0.5 rounded">VERCEL_FIREBASE_CONFIG</code> di bagian atas skrip dengan kunci dari Firebase Console Anda.
+              </p>
+              <button type="button" id="btn-settings-seed" class="btn-3d theme-slate w-full py-2.5 text-xs">
+                ✨ Isi Data Simulasi Sarpras
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindSettingEvents() {
+      const loginTrigger = document.getElementById("btn-setting-login-trigger");
+      if (loginTrigger) {
+        loginTrigger.onclick = () => openAdminLoginModal();
+      }
+      const form = document.getElementById("form-settings");
+      if (form) {
+        form.onsubmit = async (e) => {
+          e.preventDefault();
+          const fd = new FormData(e.target);
+          await saveSettings(Object.fromEntries(fd.entries()));
+        };
+      }
+      const btnSeed = document.getElementById("btn-settings-seed");
+      if (btnSeed) {
+        btnSeed.onclick = () => seedSampleDataToDatabase();
+      }
+    }
+
+    // =========================================================================
+    // 9. TIMER REALTIME GLOBAL (JAM DIGITAL & LIVE COUNTDOWN PEMAKAIAN GURU)
+    // =========================================================================
+    function tickClockAndCountdowns() {
+      const now = new Date();
+      const timeEl = document.getElementById("live-clock-time");
+      const dateEl = document.getElementById("live-clock-date");
+
+      if (timeEl) {
+        timeEl.textContent = now.toLocaleTimeString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+      }
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString("id-ID", {
+          weekday: "long",
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        });
+      }
+
+      document.querySelectorAll("[data-realtime-card]").forEach((card) => {
+        const startMs = new Date(card.getAttribute("data-start")).getTime();
+        const endMs = new Date(card.getAttribute("data-end")).getTime();
+        const nowMs = now.getTime();
+
+        const countdownEl = card.querySelector(".rt-countdown");
+        const progressEl = card.querySelector(".rt-progress");
+        const badgeEl = card.querySelector(".rt-badge");
+
+        if (!countdownEl || isNaN(endMs)) return;
+
+        const diffMs = endMs - nowMs;
+        const totalDuration = Math.max(1, endMs - (isNaN(startMs) ? endMs - 3600000 : startMs));
+        const elapsed = Math.max(0, nowMs - (isNaN(startMs) ? endMs - 3600000 : startMs));
+        const pct = Math.min(100, Math.max(4, Math.round((elapsed / totalDuration) * 100)));
+
+        if (progressEl) progressEl.style.width = `${pct}%`;
+
+        if (diffMs <= 0) {
+          const overSec = Math.floor(Math.abs(diffMs) / 1000);
+          const oh = String(Math.floor(overSec / 3600)).padStart(2, "0");
+          const om = String(Math.floor((overSec % 3600) / 60)).padStart(2, "0");
+          const os = String(overSec % 60).padStart(2, "0");
+          countdownEl.textContent = `LEWAT WAKTU (+${oh}:${om}:${os})`;
+          countdownEl.className = "rt-countdown font-display font-extrabold text-xl sm:text-2xl text-rose-400 tracking-wider";
+          if (badgeEl) {
+            badgeEl.textContent = "PERLU DIKEMBALIKAN";
+            badgeEl.className = "rt-badge px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-extrabold";
+          }
+        } else {
+          const remSec = Math.floor(diffMs / 1000);
+          const h = String(Math.floor(remSec / 3600)).padStart(2, "0");
+          const m = String(Math.floor((remSec % 3600) / 60)).padStart(2, "0");
+          const s = String(remSec % 60).padStart(2, "0");
+          countdownEl.textContent = `${h}j : ${m}m : ${s}d`;
+
+          if (remSec <= 900) {
+            countdownEl.className = "rt-countdown font-display font-extrabold text-2xl sm:text-3xl text-amber-300 tracking-wider";
+            if (badgeEl) {
+              badgeEl.textContent = "SEGERA SELESAI";
+              badgeEl.className = "rt-badge px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold";
+            }
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // 10. EVENT BOOTSTRAP SAAT HALAMAN DIMUAT
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("mobile-menu-btn").onclick = openMobileSidebar;
+      document.getElementById("close-sidebar-btn").onclick = closeMobileSidebar;
+      document.getElementById("sidebar-backdrop").onclick = closeMobileSidebar;
+
+      document.getElementById("modal-root").onclick = (e) => {
+        if (e.target.id === "modal-root") closeModal();
+      };
+
+      tickClockAndCountdowns();
+      setInterval(tickClockAndCountdowns, 1000);
+
+      renderAuthUI();
+      setActiveMenu("inventaris");
+      initFirebaseBackend();
+    });
+  </script>
+</body>
+</html>
